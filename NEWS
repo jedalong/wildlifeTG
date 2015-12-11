@@ -1,0 +1,17 @@
+WildlifeTG 0.2
+================
+* 12-05-2015 - fixed bug in jppa causing error.
+
+* 22-12-2014 - Added function sma, for computing slow movement areas, following Nelson et al.(2014)
+	     - Added function jppa, for computing joint potential path area, following Long et al. (in Prep).
+
+
+WildlifeTG 0.1
+=================
+* 22-12-2014 -  Modified version for supplementary material at Journal of Wildlife Management.
+	     -  Introduced functionality for handling projection strings
+
+* 07-10-2014 -  Major clean-up of functions and documentation.
+	     -  Added functionality for 'original' PPA method into dynppa.
+
+* 05-10-2014 -  First version released to website.
