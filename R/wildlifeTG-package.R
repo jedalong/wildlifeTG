@@ -9,13 +9,9 @@
 #' \code{wildlifeTG}'s functions utilize the \code{ltraj} objects from the package \code{adehabitat}. 
 #'
 #' @author Jed Long
-#' @references
-#' Long, JA, Nelson, TA. (2012) Time geography and wildlife home range delineation. \emph{Journal of Wildlife
-#'   Management}, 76(2):407-413.\cr\cr
-#' Long, JA, Nelson, TA. (2014) Home range and habitat analysis using dynamic time geography. \emph{Journal of 
-#'   Wildlife Management}. Accepted: 2014-12-03.\cr
+# @references
 #'
-#' @import sp adehabitatLT rgeos
+#' @import methods sp gdistance adehabitatLT rgeos raster
 #' @docType package
 #' @name wildlifeTG-package
 NULL

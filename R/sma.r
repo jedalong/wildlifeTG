@@ -28,7 +28,8 @@
 #'   This function returns a \code{SpatialPolygonsDataFrame} representing the joint accessibility space between
 #'   the two animals.
 #'
-# @references
+#' @references
+#' Nelson, T.A., Long, J.A., Laberee, K., Stewart, B.P. (2015) A time geographic approach for delineating areas of sustained wildlife use. Annals of GIS. 21(1): 81-90.
 # @keywords 
 #' @seealso dynvmax, dynppa
 # @examples

@@ -37,7 +37,8 @@
 #'   This function returns a \code{SpatialPolygonsDataFrame} representing the joint accessibility space between
 #'   the two animals.
 #'
-# @references
+#' @references
+#' Long, J.A., Webb, S.L., Nelson, T.A., Gee, K. (2015) Mapping areas of spatial-temporal overlap from wildlife telemetry data. Movement Ecology. 3:38.
 # @keywords 
 #' @seealso dynvmax, dynppa
 # @examples

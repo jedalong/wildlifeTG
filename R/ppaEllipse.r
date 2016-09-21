@@ -16,10 +16,10 @@
 #'   This function returns a polygon ellipse.
 #'
 # @references
-# @keywords 
+#' @keywords internal 
 #' @seealso dynppa
 # @examples
-#' @export
+# @export
 #
 # ---- End of roxygen documentation ----
 #===============================================================================
