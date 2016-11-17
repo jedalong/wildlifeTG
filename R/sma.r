@@ -77,23 +77,19 @@ sma <- function(traj,
         b <- sqrt((a^2)-(c^2))
         
         #Compute the ellipse
-        polyList[i] <- ppaEllipse(cpX,cpY,a,b,thetaRot,ePoints)
+        polyList[[i]] <- ppaEllipse(cpX,cpY,a,b,thetaRot,ePoints)
         #If the ellipse is not NA..
-        if (!is.null(polyList[i])){
+        if (!is.null(polyList[[i]])){
           #Create an SP object
           tempPoly <- SpatialPolygons(list(Polygons(polyList[i],ID=as.character(i))))
           #Count the number of consecutive telemetry points in the PPA ellipse
           testy <- TRUE
-          j <- i
-          while (testy==TRUE){
-            if (j > dim(trDF)[1]){
-              break
-            }
-            pts <- SpatialPoints(trDF[j,1:2])
-            testy <- gCovers(tempPoly,pts) 
-            if (testy){smaList[i] <- smaList[i]+1}
-            j <- j + 1
-          }
+          pts <- SpatialPointsDataFrame(trDF[i:n,1:2],data=data.frame(ID=i:n))
+          int <- gIntersects(tempPoly,pts,byid=T)
+          bb <- pts$ID[int]
+          cc <- which(diff(bb) != 1)[1]
+          smaList[i] <- cc
+          smaList[i] <- cc
         }      
       }
     }

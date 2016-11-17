@@ -1,8 +1,8 @@
 # ---- roxygen documentation ----
-#' @title Field-based Time Geography Utilization Distribution
+#' @title ***UNDER DEVELOPMENT*** Field-based Time Geography Utilization Distribution
 #'
 #' @description
-#'   Calculate the utilization distribution of an animal using the field-based time geographic model.
+#'   Calculate the utilization distribution of an animal using the field-based time geographic model. ***** THIS FUNCTION IS STILL IN DEVELOPMENT *****
 #' @details
 #'   Calculates the field-based time geography utilization distribution (UD) for an animal. Field-based time geography is based on an underlying resistance surface, which constratins potential movement by the animal between two location fixes. This model is applied recursively over an entire trajectory in order to compute a UD for an animal. The UD inherently considers the movement limitations described by the underlying resistance surface, and thus is considered a landscape-based model for a UD. The landscape-based approach deviates from current models building upon random walks and diffusion processes. \cr
 #'   The model requires that the resistance surface be directly related to an animals speed of passing through that environment, please see the vignette for more details as to how this might be constructed.
