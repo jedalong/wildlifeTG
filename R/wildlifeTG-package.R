@@ -11,7 +11,7 @@
 #' @author Jed Long
 # @references
 #'
-#' @import methods sp gdistance adehabitatLT rgeos raster classInt
+#' @import methods sp gdistance adehabitatLT adehabitatHR rgeos raster classInt
 #' @docType package
 #' @name wildlifeTG-package
 NULL

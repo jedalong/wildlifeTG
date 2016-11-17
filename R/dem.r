@@ -10,8 +10,8 @@
 #' @keywords datasets
 #' @format A \code{RasterLayer} with 1072 rows and 1102 columns.
 #' @name dem
-#' @examples
-#' data(dem)
-#' plot(dem)
+# @examples
+# data(dem)
+# plot(dem)
 #-----------------------------------
 NULL

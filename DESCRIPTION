@@ -13,6 +13,7 @@ Imports:
     sp,
     gdistance,
     adehabitatLT,
+    adehabitatHR,
     rgeos,
     raster,
     classInt
