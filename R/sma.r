@@ -78,23 +78,22 @@ sma <- function(traj,
         
         #Compute the ellipse
         polyList[[i]] <- ppaEllipse(cpX,cpY,a,b,thetaRot,ePoints)
-        #If the ellipse is not NA..
+        
+        #If the ellipse is not NULL count successive intersecting points...
         if (!is.null(polyList[[i]])){
           #Create an SP object
           tempPoly <- SpatialPolygons(list(Polygons(polyList[i],ID=as.character(i))))
           #Count the number of consecutive telemetry points in the PPA ellipse
-          testy <- TRUE
           pts <- SpatialPointsDataFrame(trDF[i:n,1:2],data=data.frame(ID=i:n))
           int <- gIntersects(tempPoly,pts,byid=T)
           bb <- pts$ID[int]
           cc <- which(diff(bb) != 1)[1]
           smaList[i] <- cc
-          smaList[i] <- cc
-        }      
+        }  
       }
     }
   }
-  
+
   #df is the data.frame associated with information of each sma. It sorts here by SMA.value
   # then it filters out overlap based on the parameter sma.tol {0,1}. Here we are trying to 
   # identify 'new' SMA's by eliminating those that overlap temporally with previous SMA's. Note
@@ -123,13 +122,21 @@ sma <- function(traj,
   i.start <- df$i.start[1:sma.keep]
   i.end <- df$i.end[1:sma.keep]
   
+  ###FAILING BELOW
+
   ###This section compiles the polygon ellipses associated with each SMA.
   for (i in 1:sma.keep){
     #extract the polys associated with each SMA
     # Note: the i.end - 1 is because ellipses are defined for two consecutive points.
-    pList <- polyList[i.start[i]:(i.end[i]-1)]
-    a <- Polygons(pList,ID='a')
-    poly <- SpatialPolygons(list(a),proj4string=proj4string)
+    ind.poly <- i.start[i]:(i.end[i]-1)
+    pList <- polyList[ind.poly]
+    #Remove NULL polygons
+    ind.null<- which(lapply(pList, is.null) == FALSE)
+    pList <- pList[ind.null]
+    ind.poly <- ind.poly[ind.null]
+    pList <- lapply(pList,list)
+    tempPoly <- mapply(Polygons, pList, ind.poly)
+    poly <- SpatialPolygons(tempPoly,proj4string=proj4string)
     u.poly <- gUnaryUnion(poly,id=as.character(i.start[i]))
     if (i == 1){
       sma.p <- u.poly

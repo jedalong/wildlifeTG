@@ -91,7 +91,6 @@ dynppa <- function(traj, tol=max(ld(traj)$dt,na.rm=TRUE),dissolve=TRUE,proj4stri
   ind.poly <- which(lapply(polyList, is.null) == FALSE)
   polyList <- polyList[ind.poly]
   polyList <- lapply(polyList,list)
-  polyList
   tempPoly <- mapply(Polygons, polyList, ind.poly)
   data <- data.frame(ind=ind.poly, date=trDF$date[ind.poly])
   spPoly <- SpatialPolygonsDataFrame(SpatialPolygons(tempPoly,proj4string=proj4string),data,match.ID=FALSE)

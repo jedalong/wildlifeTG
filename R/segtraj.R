@@ -24,7 +24,7 @@
 segtraj <- function(traj,k=2,style='fisher',col='dist'){
   trj <- ld(traj)
   x <- trj[,col]
-  a <- classIntervals(x,n=k,style=style,na.rm=T)
+  suppressWarnings(a <- classIntervals(x,n=k,style=style,na.rm=T))
   fac <- cut(x,breaks=a$brks,include.lowest=TRUE)
   levels(fac) <- 1:k #lowest to highest values
   trj$class <- fac
