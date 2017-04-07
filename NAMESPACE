@@ -2,6 +2,7 @@
 
 export(dynppa)
 export(dynvmax)
+export(fbtgTS)
 export(fbtgUD)
 export(jppa)
 export(segtraj)

@@ -4,7 +4,7 @@
 \alias{volras}
 \title{Volume contour from Raster}
 \usage{
-volras(x, percent, simplify = FALSE)
+volras(x, percent = 95, maxpixels = 10000)
 }
 \arguments{
 \item{x}{a \code{RasterLayer}}
@@ -22,5 +22,4 @@ Compute a percent volume contour from a raster UD.
 \details{
 The volras function simply modifies the getvolumeUD function from the package \code{adehabitatHR} developed by C. Calenge. Basically, I was getting errors when using the getvolumeUD function, so I modified that function, and added the simplify polygon functionality.
 }
-\keyword{internal}
 

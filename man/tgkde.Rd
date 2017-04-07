@@ -11,7 +11,7 @@ tgkde(traj, disfun = "inv", grid = NA, ...)
 
 \item{disfun}{one of { \code{'inv', 'inv2', 'exp', 'norm'} } representing the shape of the distance decay function used to model movement probabilities within the geoellipse (see Downs et al. (2011) for more information).}
 
-\item{grid}{spatial resolution (pixel size) of output utilization raster in appropriate units. Default is chosen based on the x and y range of the input telemetry data.}
+\item{grid}{spatial resolution (pixel size) of output utilization raster in appropriate units. Default is chosen based on the x and y range of the input telemetry data. Alternatively, a \code{RasterLayer} can be passed in upon which the UD is computed.}
 
 \item{...}{additional parameters to be passed to the function \code{dynvmax}. For example, should include options for \code{dynamic} and \code{method}; see the documentation for \code{dynvmax} for more detailed information on what to include here.}
 }
