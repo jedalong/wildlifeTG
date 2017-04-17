@@ -28,8 +28,8 @@ internalPfun <- function(x,timefun,c2,dt){
   #Check if c2 is
   if (is.na(c2)){
     c2 <- switch(timefun,
-                 inverse = 1,
-                 inverse2 = 1,
+                 inverse = dt^(-1),
+                 inverse2 = dt^(-2),
                  exp = dt^(-1),
                  norm = dt^(-2),
                  rootexp = dt^(-0.5),
@@ -41,8 +41,8 @@ internalPfun <- function(x,timefun,c2,dt){
   
   #Functions to get probability relative to an expected continuous movement along the LCP
   Pt <- switch(timefun,
-               inverse = 1 / (x+c2),
-               inverse2 = 1 / ((x+c2)^2),
+               inverse = 1 / (c2*x+1),
+               inverse2 = 1 / ((c2*x+1)^2),
                exp = exp(-c2*(x)),
                norm = exp(-c2*((x)^2)),
                rootexp = exp(-c2*((x)^0.5)),
