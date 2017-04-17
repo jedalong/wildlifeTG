@@ -50,7 +50,8 @@ internalTS <- function(ta,t,cai,cib,Tshort,sigma,timefun,c2,clipPPS){
   #Set minimal time location(s) = 0
   Tfab <- Tfab - min
   #Compute probabilities
-  Pt <- internalPfun(Tfab,timefun,c2,t)
+  dt <- Tshort/t
+  Pt <- internalPfun(Tfab,timefun,c2,dt)
   
   #####===== Locational UNCERTAINTY ANALYSIS===
   #uses same formulation as in Brownian bridge
