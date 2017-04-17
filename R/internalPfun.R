@@ -34,7 +34,7 @@ internalPfun <- function(x,timefun,c2,dt){
                  norm = dt^(-2),
                  rootexp = dt^(-0.5),
                  pareto = log(dt)^(-1),
-                 lognorm = log(dt)^(-2)
+                 lognorm = log(dt)^(-2),
                  stop(paste('The time function',timefun,'does not exist.'))
     )
   }
