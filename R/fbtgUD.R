@@ -37,7 +37,7 @@
 #
 # ---- End of roxygen documentation ----
 
-fbtgUD <- function(traj,surf,timefun='inverse',c2=1,sigma=0,k=100,clipPPS=TRUE,d.min=0,dt.max=Inf){
+fbtgUD <- function(traj,surf,timefun='inverse',c2=NA,sigma=0,k=100,clipPPS=TRUE,d.min=0,dt.max=Inf){
   
   #make a trajectory dataframe
   df <- ld(traj)

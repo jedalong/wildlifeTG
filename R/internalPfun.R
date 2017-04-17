@@ -23,8 +23,23 @@
 #' @keywords internal 
 # ---- End of roxygen documentation ----
 
-Pfun <- function(x,timefun,c2){
-  #Inverse time to get probability relative to an expected continuous movement along the LCP
+internalPfun <- function(x,timefun,c2,dt){
+  
+  #Check if c2 is
+  if (is.na(c2)){
+    c2 <- switch(timefun,
+                 inverse = 1,
+                 inverse2 = 1,
+                 exp = dt^(-1),
+                 norm = dt^(-2),
+                 rootexp = dt^(-0.5),
+                 pareto = log(dt)^(-1),
+                 lognorm = log(dt)^(-2)
+                 stop(paste('The time function',timefun,'does not exist.'))
+    )
+  }
+  
+  #Functions to get probability relative to an expected continuous movement along the LCP
   Pt <- switch(timefun,
                inverse = 1 / (x+c2),
                inverse2 = 1 / ((x+c2)^2),

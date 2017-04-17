@@ -8,7 +8,7 @@
 #'   
 #' @param x a \code{RasterLayer}
 #' @param percent a percent value to get the volume contour, e.g., 95.
-#' @param simplify (logical) whether or not to simplify the output contour (uses \code{gSimplify}). 
+#' @param maxpixels numeric value, how many pixels to be included in countour line. More pixels results in a more detailed output polygon, but slower calcultion. 
 #' 
 #' @return
 #'   A \code{SpatialPolygonsDataFrame}.
