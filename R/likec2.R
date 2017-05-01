@@ -76,8 +76,8 @@ likec2 <- function(traj,tr,timefun,min=0,max=1,length.out=50,rand=NA,parallel=1,
     Bi <- cellFromXY(r,B)
     Ci <- cellFromXY(r,C)
     
-    t1 <- x$dt[j-1]
-    t2 <- x$dt[j]
+    t1 <- x$dt[j]
+    t2 <- x$dt[j+1]
     
     #This is the value input for various functions
     tm <- transitionMatrix(tr)

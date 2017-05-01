@@ -16,5 +16,7 @@ Imports:
     adehabitatHR,
     rgeos,
     raster,
-    classInt
+    classInt,
+    foreach,
+    doParallel
 RoxygenNote: 5.0.1

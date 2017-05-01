@@ -4,7 +4,7 @@
 \alias{fbtgUD}
 \title{Field-based Time Geography Utilization Distribution}
 \usage{
-fbtgUD(traj, surf, timefun = "inverse", c2 = 1, sigma = 0, k = 100,
+fbtgUD(traj, surf, timefun = "inverse", c2 = NA, sigma = 0, k = 100,
   clipPPS = TRUE, d.min = 0, dt.max = Inf)
 }
 \arguments{
@@ -21,7 +21,7 @@ fbtgUD(traj, surf, timefun = "inverse", c2 = 1, sigma = 0, k = 100,
 -- \code{'pareto'} \eqn{= \exp{-c_2 * \log{t}}},\cr
 -- \code{'lognorm'}\eqn{= \exp{-c_2 * \log{t^2}}}.\cr}
 
-\item{c2}{Parameter input into \code{timefun}, default=1.}
+\item{c2}{Parameter input into \code{timefun} (see \code{likec2}) default=1.}
 
 \item{sigma}{locational uncertainty parameter for Guassian error kernel, default=0.}
 
@@ -45,6 +45,6 @@ Calculates the field-based time geography utilization distribution (UD) for an a
   The timefun parameter is used to choose the model for converting time into a probability based on the described function. The \code{c2} parameter can be used to tune these functions based on some fine-scale movement data if available, but defaults to a value of 1. The sigma parameter represents the locational uncertainty, which can be interpreted as the standard deviation of the location error in a similar fashion to what is done in Brownian bridge models. The parameter k, which defines how many 'time slices' are to be computed, is the most significant influencer of computational time. Lower values will result speed up computations, but result in less-smooth output UD surfaces.
 }
 \seealso{
-ppa
+ppa, likec2
 }
 
