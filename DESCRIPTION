@@ -18,5 +18,6 @@ Imports:
     raster,
     classInt,
     foreach,
-    doParallel
+    doParallel,
+    parallel,
 RoxygenNote: 5.0.1
