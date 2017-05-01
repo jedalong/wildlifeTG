@@ -30,6 +30,7 @@ internalSEG <- function(j, df, surf, k, sigma, timefun, c2, clipPPS){
   t <- df$dt[j]
   
   #Compute Accumulated cost (i.e, time) for location A and B
+  ## Could be simplified see likec2
   cai <- JaccCost(surf,A,'out')
   cib <- JaccCost(surf,B,'in')
   #compute the cost of the shortest path
