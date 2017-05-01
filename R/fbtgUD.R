@@ -18,7 +18,7 @@
 #' -- \code{'rootexp'} \eqn{= \exp{-c_2 * \sqrt{t}}},\cr
 #' -- \code{'pareto'} \eqn{= \exp{-c_2 * \log{t}}},\cr
 #' -- \code{'lognorm'}\eqn{= \exp{-c_2 * \log{t^2}}}.\cr
-#' @param c2 Parameter input into \code{timefun}, default=1.
+#' @param c2 Parameter input into \code{timefun} (see \code{likec2}) default=1.
 #' @param sigma locational uncertainty parameter for Guassian error kernel, default=0.
 #' @param k number of time slices between fixes upon which to estimate the UD, default=100. 
 #' @param clipPPS (logical) whether or not the output probabilities should be clipped to the potential path space, default=TRUE.
@@ -31,7 +31,7 @@
 #'
 # @references
 # @keywords 
-#' @seealso ppa
+#' @seealso ppa, likec2
 # @examples
 #' @export
 #
