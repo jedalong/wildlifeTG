@@ -22,36 +22,19 @@
 # ---- End of roxygen documentation ----
 
 internalTS <- function(ta,t,cai,cib,Tshort,sigma,timefun,c2,clipPPS){
+  
   tb <- t - ta
-  #Compute ST cone from point a at tk
-  m <- matrix(c(ta+1,Inf,Inf),ncol=3,byrow=T)
-  cai <- reclassify(cai,m)
-  #Compute ST cone from point b at time s
-  m <- matrix(c(tb+1,Inf,Inf),ncol=3,byrow=T)
-  cib <- reclassify(cib,m)
   
-  #Compute the binary PPS
-  PPS <- cai+cib
-  PPS[!is.infinite(PPS)] <- 1
-  #Check that there exists some locations in the PPS
-  ## NEED TO ADD IN AN ERROR CHECKING MECHANISM HERE ##
-  if (is.infinite(cellStats(PPS,'min'))){
-    next
-  }
-  
-  #Compute time fraction relative to Expected time based on LCP and clip to PPS
-  Tfa <- abs(ta/t * Tshort - cai)*PPS
-  Tfb <- abs(tb/t * Tshort - cib)*PPS
-  
-  #Compute the total time deviation from the Expected time based on LCP
+  #Compute Delta T_i,t
+  Tfa <- abs(ta/t * Tshort - cai)
+  Tfb <- abs(tb/t * Tshort - cib)
   Tfab <- Tfa+Tfb
+  
   #Find minimal time (should be ~0 and should be on LCP, may be more than one cell)
   min <- cellStats(Tfab,'min',na.rm=TRUE)
-  #Set minimal time location(s) = 0
-  Tfab <- Tfab - min
-  #Compute probabilities
-  dt <- Tshort/t
-  Pt <- internalPfun(Tfab,timefun,c2,dt)
+  Tfab <- Tfab - min                            #Set minimal time location(s) == 0
+  
+  Pt <- internalPfun(Tfab,timefun,c2)           #Compute probabilities
   
   #####===== Locational UNCERTAINTY ANALYSIS===
   #uses same formulation as in Brownian bridge
@@ -63,12 +46,24 @@ internalTS <- function(ta,t,cai,cib,Tshort,sigma,timefun,c2,clipPPS){
   ####==============================
   
   #If clipPPS = TRUE: set to zero outside of PPS
-  if (clipPPS){ 
-    PPS[is.infinite(PPS)] <- 0
+  if (clipPPS){
+    #Compute forward ST cone from point a
+    m <- matrix(c(0,ta,1,ta,Inf,0),ncol=3,byrow=T)
+    cai <- reclassify(cai,m)
+    #Compute backward ST cone from point b
+    m <- matrix(c(0,tb,1,tb,Inf,0),ncol=3,byrow=T)
+    cib <- reclassify(cib,m)
+    #Compute the binary PPS
+    PPS <- cai*cib
+    #Check that there exists some locations in the PPS
+    ## NEED TO ADD IN AN ERROR CHECKING MECHANISM HERE ##
+    #if (cellStats(PPS,'max') == 0 ){
+    #  next
+    #}
     Pt <- Pt*PPS 
   }
   
-  #Normalize so that probability at any given time sums to 1
+  #C1 Parameter = Normalize so that probability at any given time sums to 1.
   Pt <- Pt / cellStats(Pt,stat='sum')
   
   return(getValues(Pt))

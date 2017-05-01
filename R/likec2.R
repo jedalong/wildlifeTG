@@ -34,28 +34,14 @@
 #
 # ---- End of roxygen documentation ----
 likec2 <- function(traj,tr,timefun,min=0,max=1,length.out=50,rand=NA,parallel=1,plot=TRUE){
+  
   pckgs <- c('gdistance')
+  
   #internal likelihood funciton 
   PiFun <- function(c2,x,zi,timefun){
-    Pt <- switch(timefun,
-                 inverse = 1 / (c2*x+1),
-                 inverse2 = 1 / ((c2*x+1)^2),
-                 exp = exp(-c2*(x)),
-                 norm = exp(-c2*((x)^2)),
-                 rootexp = exp(-c2*((x)^0.5)),
-                 pareto = exp(-c2*log(x)),
-                 lognorm = exp(-c2*(log(x)^2)),
-                 stop(paste('The time function',timefun,'does not exist.')))
+    Pt <- internalPfun(x,timefun,c2)
     c1 <- 1/sum(Pt)
-    Pi <- switch(timefun,
-                 inverse = 1 / (c2*zi+1),
-                 inverse2 = 1 / ((c2*zi+1)^2),
-                 exp = exp(-c2*(zi)),
-                 norm = exp(-c2*((zi)^2)),
-                 rootexp = exp(-c2*((zi)^0.5)),
-                 pareto = exp(-c2*log(zi)),
-                 lognorm = exp(-c2*(log(zi)^2)),
-                 stop(paste('The time function',timefun,'does not exist.')))
+    Pi <- internalPfun(zi,timefun,c2)
     Pi <- c1*Pi
     return(Pi)
   }
@@ -90,14 +76,19 @@ likec2 <- function(traj,tr,timefun,min=0,max=1,length.out=50,rand=NA,parallel=1,
     Bi <- cellFromXY(r,B)
     Ci <- cellFromXY(r,C)
     
+    t1 <- x$dt[j-1]
+    t2 <- x$dt[j]
+    
     #This is the value input for various functions
     tm <- transitionMatrix(tr)
     gr <- graph.adjacency(tm, mode="directed", weighted=TRUE)
     E(gr)$weight <- 1/E(gr)$weight		
     d1 <- distances(gr,v=Ai,to=V(gr),mode='out')
     d2 <- distances(gr,v=Ci,to=V(gr),mode='in')
+    Ts <- costDistance(tr,A,C)
+    del <- t1 / (t1+t2)
     
-    Ti <- d1[1,] + d2[1,] - costDistance(tr,A,C)
+    Ti <- abs(d1[1,] - del*Ts) + abs(d2[1,] - del*Ts) 
     Zi <- Ti[Bi]
     
     #compute the likelihood

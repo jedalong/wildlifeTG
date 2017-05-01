@@ -57,7 +57,7 @@ internalSEG <- function(j, df, surf, k, sigma, timefun, c2, clipPPS){
   #Numerical integration by trapezoidal rule approximation cumulative probability of prism for pixel.
   Pi <- t/(k+1) * (P + 0.5*xx)  #xx is anchors (multiply by 0.5 because each point is used twice in trajectory - except for boundary points, but ok)
   
-  #Make sure Pi sums to the segment time budget to account for unequally timed segments
+  #Make sure Pi sums to the segment time budget to account for unequally timed segments  ### check necessary?
   Pi <- (Pi/cellStats(Pi,sum)) * t
   
   return(getValues(Pi))
