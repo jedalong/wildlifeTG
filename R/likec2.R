@@ -7,7 +7,7 @@
 #' THe estimation of the \code{c2} parameter for \code{fbtgUD} model takes an identical approach to that used with Brownian bridges, as originally proposed by Horne et al. (2007). A leave-one-out estimation technique is used, which essentially removes fixes and then estimates the fbtgUD surface between the two adjacent fixes  -- termed a segment -- and computes the probability associated with the missing fix. The \code{c2} value is returned that numerically maximizes the log-likelihood (for a given \code{timefun} -- see details in \code{fbtgUD}) for \code{length.out} evenly spaced values of \code{c2} between (user-defined) \code{min} and \code{max}. With \code{plot = TRUE} the user can verify that the chosen range of potential \code{c2} values is appropriate, and if not, retry using a differnt range. The process is computationally demanding and is highly dependent on the number of 'segments' used. The parameter \code{rand} can be used to adjust the number of segments used to minimize computational time. If \code{rand = NA} it removes every second fix, and estimates \code{c2} based on these n/2 segments (the default). Otherwise \code{rand} can be passed in as an integer, and \code{rand} randomly selected segments will be chosen to estimate \code{c2}. This is beneficial for trajectories with many fixes, where it might be useful to choose \code{rand <<< n/2}. Parrallelization is possible to further decrease computational time. This can be implemented by choosing an appropriate integer value for the \code{parallel} parameter (implemented using the \code{foreach} package). 
 #'   
 #' @param traj animal movement trajectory in the form of an \code{ltraj} object, see package \code{adehabitatLT}
-#' @param tr a \code{TransitionLayer} object
+#' @param tl a \code{TransitionLayer} object
 #' @param timefun method for converting time into probability (see \code{fbtgUD}); one of:\cr 
 #' -- \code{'inverse'} \eqn{= \frac{1}{c_2 * t}},\cr
 #' -- \code{'inverse2'} \eqn{= \frac{1}{(c_2 * t)^2}},\cr
@@ -33,7 +33,7 @@
 #' @export
 #
 # ---- End of roxygen documentation ----
-likec2 <- function(traj,tr,timefun,min=0,max=1,length.out=50,rand=NA,parallel=1,plot=TRUE){
+likec2 <- function(traj,tl,timefun,min=0,max=1,length.out=50,rand=NA,parallel=1,plot=TRUE){
   
   pckgs <- c('gdistance')
   
@@ -45,9 +45,6 @@ likec2 <- function(traj,tr,timefun,min=0,max=1,length.out=50,rand=NA,parallel=1,
     Pi <- c1*Pi
     return(Pi)
   }
-
-  #rasterize transitionLayer
-  r <- raster(tr)
   
   #use leave-one-out bootstrap to estimate theta in a similar fashion to proposed by Horne et al. 2007 as is commonly used with Brownian bridge, can speed up by chosing smaller number of random segments to test.
   x <- ld(traj)
@@ -72,23 +69,24 @@ likec2 <- function(traj,tr,timefun,min=0,max=1,length.out=50,rand=NA,parallel=1,
     B <- as.numeric(x[j+1,c('x','y')])
     C <- as.numeric(x[j+2,c('x','y')])
     
-    Ai <- cellFromXY(r,A)
-    Bi <- cellFromXY(r,B)
-    Ci <- cellFromXY(r,C)
+    Ai <- cellFromXY(raster(tl),A)
+    Bi <- cellFromXY(raster(tl),B)
+    Ci <- cellFromXY(raster(tl),C)
     
     t1 <- x$dt[j]
     t2 <- x$dt[j+1]
     
     #This is the value input for various functions
-    tm <- transitionMatrix(tr)
+    tm <- transitionMatrix(tl)
     gr <- graph.adjacency(tm, mode="directed", weighted=TRUE)
     E(gr)$weight <- 1/E(gr)$weight		
     d1 <- distances(gr,v=Ai,to=V(gr),mode='out')
     d2 <- distances(gr,v=Ci,to=V(gr),mode='in')
+    rm(list=c('tm','gr'))
     Ts <- costDistance(tr,A,C)
     del <- t1 / (t1+t2)
     
-    Ti <- abs(d1[1,] - del*Ts) + abs(d2[1,] - del*Ts) 
+    Ti <- abs(d1[1,] - del*Ts) + abs(d2[1,] - (1-del)*Ts) 
     Zi <- Ti[Bi]
     
     #compute the likelihood

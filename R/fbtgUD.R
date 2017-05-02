@@ -9,7 +9,7 @@
 #'   The timefun parameter is used to choose the model for converting time into a probability based on the described function. The \code{c2} parameter can be used to tune these functions based on some fine-scale movement data if available, but defaults to a value of 1. The sigma parameter represents the locational uncertainty, which can be interpreted as the standard deviation of the location error in a similar fashion to what is done in Brownian bridge models. The parameter k, which defines how many 'time slices' are to be computed, is the most significant influencer of computational time. Lower values will result speed up computations, but result in less-smooth output UD surfaces. 
 #'   
 #' @param traj animal movement trajectory in the form of an \code{ltraj} object, see package \code{adehabitatLT}
-#' @param surf a \code{TransitionLayer} object
+#' @param tl a \code{TransitionLayer} object
 #' @param timefun method for convertingtime into probability; one of:\cr 
 #' -- \code{'inverse'} \eqn{= \frac{1}{c_2 * t}},\cr
 #' -- \code{'inverse2'} \eqn{= \frac{1}{(c_2 * t)^2}},\cr
@@ -23,7 +23,7 @@
 #' @param k number of time slices between fixes upon which to estimate the UD, default=100. 
 #' @param clipPPS (logical) whether or not the output probabilities should be clipped to the potential path space, default=TRUE.
 #' @param d.min minimum distance, below which the segment is removed from analysis. Can be used to focus the UD on only longer movement segments. Default is the pixel size of \code{surf}.
-#' @param dt.max maximum time, above which the segment is removed from analysis. Can be used to remove segments with missing data from analysis, as segments with a very long time between fixes are problematic in time geographic analysis.
+#' @param dt.max maximum time, above which the segment is removed from analysis. Can be used to remove segments with missing data from analysis, as segments with a very long time between fixes can be problematic in time geographic analysis.
 
 
 #' @return
@@ -37,13 +37,13 @@
 #
 # ---- End of roxygen documentation ----
 
-fbtgUD <- function(traj,surf,timefun='inverse',c2=NA,sigma=0,k=100,clipPPS=TRUE,d.min=0,dt.max=Inf){
+fbtgUD <- function(traj,tl,timefun='inverse',c2=NA,sigma=0,k=100,clipPPS=TRUE,d.min=0,dt.max=Inf){
   
   #make a trajectory dataframe
   df <- ld(traj)
   
   #make an output raster
-  Pi <- raster(surf)*0
+  Pi <- raster(tl)*0
   
   #Get only segments that meet the following criteria:
   # 1. dist > d.min  - minimum distance of movement (i.e., ignore non-movement segments)
@@ -52,7 +52,7 @@ fbtgUD <- function(traj,surf,timefun='inverse',c2=NA,sigma=0,k=100,clipPPS=TRUE,
 
   P.V <- getValues(Pi)
   #Compute the values for each Time Slice using internalTS function
-  P.I <- vapply(ind,internalSEG,FUN.VALUE=P.V, df, surf, k, sigma, timefun, c2, clipPPS)
+  P.I <- vapply(ind,internalSEG,FUN.VALUE=P.V, df, tl, k, sigma, timefun, c2, clipPPS)
   Pi <- setValues(Pi, apply(P.I,1,sum))
   
   
