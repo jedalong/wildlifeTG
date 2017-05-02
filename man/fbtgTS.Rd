@@ -4,18 +4,25 @@
 \alias{fbtgTS}
 \title{Field-based Time Geography Utilization Distribution}
 \usage{
-fbtgTS(traj, tk, surf, sigma, timefun = "inverse", c2 = 1, clipPPS = TRUE)
+fbtgTS(traj, tk, tl, sigma, timefun = "inverse", c2 = 1, clipPPS = TRUE)
 }
 \arguments{
+\item{traj}{animal movement trajectory in the form of an \code{ltraj} object, see package \code{adehabitatLT}}
+
 \item{tk}{time to compute the probability surface, \code{ta < tk < tb}.}
 
-\item{timefun}{method for converting movement time into probability; one of: \code{'inverse' (default),'inverse2','exp','norm','rootexp','pareto','lognorm'}, see details.}
+\item{tl}{a \code{TransitionLayer} object}
+
+\item{timefun}{method for convertingtime into probability; one of:\cr 
+-- \code{'inverse'} \eqn{= \frac{1}{c_2 * t}},\cr
+-- \code{'inverse2'} \eqn{= \frac{1}{(c_2 * t)^2}},\cr
+-- \code{'exp'} \eqn{= \exp{-c_2 * t}},\cr
+-- \code{'norm'} \eqn{= \exp{-c_2 * t^2}},\cr
+-- \code{'rootexp'} \eqn{= \exp{-c_2 * \sqrt{t}}},\cr
+-- \code{'pareto'} \eqn{= \exp{-c_2 * \log{t}}},\cr
+-- \code{'lognorm'}\eqn{= \exp{-c_2 * \log{t^2}}}.\cr}
 
 \item{c2}{Parameter input into \code{timefun} default=1, see details.}
-
-\item{A}{coordinates of origin point of a movement segment in the form \code{c(x,y,t)}.}
-
-\item{B}{coordinates of end point of a movement segment in the form \code{c(x,y,t)}.}
 
 \item{k}{number of time slices between fixes upon which to estimate the UD, default=10.}
 }

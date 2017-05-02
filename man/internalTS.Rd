@@ -4,16 +4,18 @@
 \alias{internalTS}
 \title{Time Slice Function for fbtg}
 \usage{
-internalTS(ta, t, cai, cib, Tshort, sigma, timefun, c2, clipPPS)
+internalTS(ta, t, Tai, Tib, tl, Tshort, sigma, timefun, c2, clipPPS)
 }
 \arguments{
 \item{ta}{time point of the slice.}
 
 \item{t}{total duration of the segment.}
 
-\item{cai}{accumulated cost surface from anchor A to location i.}
+\item{Tai}{accumulated costs from anchor A to location i.}
 
-\item{cib}{accumulated cost sufrace from location i to anchor B.}
+\item{Tib}{accumulated costs from location i to anchor B.}
+
+\item{tl}{\code{TransitionLayer} object used to compute Tai, Tib}
 
 \item{sigma}{parameter for modelling location uncertainty (s.d. of Guassian location error).}
 

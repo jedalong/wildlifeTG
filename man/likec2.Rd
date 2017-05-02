@@ -4,13 +4,13 @@
 \alias{likec2}
 \title{Numerically estimate c2 parameter}
 \usage{
-likec2(traj, tr, timefun, min = 0, max = 1, length.out = 50, rand = NA,
+likec2(traj, tl, timefun, min = 0, max = 1, length.out = 50, rand = NA,
   parallel = 1, plot = TRUE)
 }
 \arguments{
 \item{traj}{animal movement trajectory in the form of an \code{ltraj} object, see package \code{adehabitatLT}}
 
-\item{tr}{a \code{TransitionLayer} object}
+\item{tl}{a \code{TransitionLayer} object}
 
 \item{timefun}{method for converting time into probability (see \code{fbtgUD}); one of:\cr 
 -- \code{'inverse'} \eqn{= \frac{1}{c_2 * t}},\cr

@@ -4,13 +4,13 @@
 \alias{fbtgUD}
 \title{Field-based Time Geography Utilization Distribution}
 \usage{
-fbtgUD(traj, surf, timefun = "inverse", c2 = NA, sigma = 0, k = 100,
+fbtgUD(traj, tl, timefun = "inverse", c2 = NA, sigma = 0, k = 100,
   clipPPS = TRUE, d.min = 0, dt.max = Inf)
 }
 \arguments{
 \item{traj}{animal movement trajectory in the form of an \code{ltraj} object, see package \code{adehabitatLT}}
 
-\item{surf}{a \code{TransitionLayer} object}
+\item{tl}{a \code{TransitionLayer} object}
 
 \item{timefun}{method for convertingtime into probability; one of:\cr 
 -- \code{'inverse'} \eqn{= \frac{1}{c_2 * t}},\cr
@@ -31,7 +31,7 @@ fbtgUD(traj, surf, timefun = "inverse", c2 = NA, sigma = 0, k = 100,
 
 \item{d.min}{minimum distance, below which the segment is removed from analysis. Can be used to focus the UD on only longer movement segments. Default is the pixel size of \code{surf}.}
 
-\item{dt.max}{maximum time, above which the segment is removed from analysis. Can be used to remove segments with missing data from analysis, as segments with a very long time between fixes are problematic in time geographic analysis.}
+\item{dt.max}{maximum time, above which the segment is removed from analysis. Can be used to remove segments with missing data from analysis, as segments with a very long time between fixes can be problematic in time geographic analysis.}
 }
 \value{
 This function returns a \code{RasterLayer} which can be used to estimate the UD of an animal.

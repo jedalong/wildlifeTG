@@ -11,7 +11,7 @@ volras(x, percent = 95, maxpixels = 10000)
 
 \item{percent}{a percent value to get the volume contour, e.g., 95.}
 
-\item{maxpixels}{numeric value, how many pixels to be included in countour line. More pixels results in a more detailed output polygon, but slower calcultion.}
+\item{maxpixels}{numeric value, how many pixels to be included in countour line. More pixels results in a more detailed output polygon, but slower calculation.}
 }
 \value{
 A \code{SpatialPolygonsDataFrame}.

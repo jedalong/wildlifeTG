@@ -4,14 +4,14 @@
 \alias{internalSEG}
 \title{Segment Function for fbtg}
 \usage{
-internalSEG(j, df, surf, k, sigma, timefun, c2, clipPPS)
+internalSEG(j, df, tl, k, sigma, timefun, c2, clipPPS)
 }
 \arguments{
 \item{j}{index of the segment.}
 
 \item{df}{trajectory dataframe (from \code{ld(traj)})}
 
-\item{surf}{\code{TransitionLayer} modelling movement costs.}
+\item{tl}{\code{TransitionLayer} modelling movement costs.}
 
 \item{k}{number of steps for use in \code{internalTS}.}
 
