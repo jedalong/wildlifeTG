@@ -37,7 +37,7 @@
 #
 # ---- End of roxygen documentation ----
 
-fbtgUD <- function(traj,tl,timefun='inverse',c2=NA,sigma=0,k=100,clipPPS=TRUE,d.min=0,dt.max=Inf){
+fbtgUD <- function(traj,tl,timefun='inverse',c2=1,sigma=0,k=100,clipPPS=TRUE,d.min=0,dt.max=Inf){
   
   #make a trajectory dataframe
   df <- ld(traj)
@@ -48,12 +48,18 @@ fbtgUD <- function(traj,tl,timefun='inverse',c2=NA,sigma=0,k=100,clipPPS=TRUE,d.
   #Get only segments that meet the following criteria:
   # 1. dist > d.min  - minimum distance of movement (i.e., ignore non-movement segments)
   # 2. dt < dt.max   - maximum time difference (i.e., ignore segments with long durations)
-  ind <- which(df$dist > d.min & df$dt < dt.max)
+  #ind <- which(df$dist > d.min & df$dt < dt.max)
 
-  P.V <- getValues(Pi)
+  
   #Compute the values for each Time Slice using internalTS function
-  P.I <- vapply(ind,internalSEG,FUN.VALUE=P.V, df, tl, k, sigma, timefun, c2, clipPPS)
-  Pi <- setValues(Pi, apply(P.I,1,sum))
+  n <- dim(df)[1]-1
+  for (i in 1:n){
+    print(i)
+    pi <- pi + internalSEG(i, df, tl, k, sigma, timefun, c2, clipPPS)
+  }
+  #P.V <- getValues(Pi)
+  #P.I <- vapply(ind,internalSEG,FUN.VALUE=P.V, df, gr, k, sigma, timefun, c2, clipPPS)
+  #Pi <- setValues(Pi, apply(P.I,1,sum))
   
   
   #Make 0's NA for easy plotting on output

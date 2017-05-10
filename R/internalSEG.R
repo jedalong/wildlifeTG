@@ -29,14 +29,17 @@ internalSEG <- function(j, df, tl, k, sigma, timefun, c2, clipPPS){
   xy <- rbind(A,B)
   t <- df$dt[j]
   
+  Ai <- cellFromXY(raster(tl),A)
+  Bi <- cellFromXY(raster(tl),B)
+  
   #Compute Accumulated cost (i.e, time) for location A and B
   #This is the value input for various functions
   tm <- transitionMatrix(tl)
   gr <- graph.adjacency(tm, mode="directed", weighted=TRUE)
-  E(gr)$weight <- 1/E(gr)$weight		
-  Tai <- distances(gr,v=A,to=V(gr),mode='out')
-  Tib <- distances(gr,v=C,to=V(gr),mode='in')
-  rm(list=c('tm','gr'))
+  E(gr)$weight <- 1/E(gr)$weight
+  Tai <- distances(gr,v=Ai,to=V(gr),mode='out')
+  Tib <- distances(gr,v=Bi,to=V(gr),mode='in')
+
   #compute the cost of the shortest path
   Tshort <- costDistance(tl,A,B)[1]
   #time slices used to estimate prism
@@ -44,9 +47,9 @@ internalSEG <- function(j, df, tl, k, sigma, timefun, c2, clipPPS){
   
   #empty raster to populate
   P <- raster(tl)*0
-  P <- getValues(P)
+  P.v <- getValues(P)
   #Compute the values for each Time Slice using internalTS function
-  PP <- vapply(tk,internalTS,FUN.VALUE=P,t=t,Tai=Tai,Tib=Tib,tl=tl,Tshort=Tshort,sigma=sigma,timefun=timefun,c2=c2,clipPPS=clipPPS)
+  PP <- vapply(tk,internalTS,FUN.VALUE=P.v,t=t,Tai=Tai,Tib=Tib,tl=tl,Tshort=Tshort,sigma=sigma,timefun=timefun,c2=c2,clipPPS=clipPPS)
   P <- setValues(P, apply(PP,1,sum))
   
   
@@ -65,5 +68,5 @@ internalSEG <- function(j, df, tl, k, sigma, timefun, c2, clipPPS){
   #Make sure Pi sums to the segment time budget to account for unequally timed segments  ### check necessary?
   Pi <- (Pi/cellStats(Pi,sum)) * t
   
-  return(getValues(Pi))
+  return(Pi)
 }

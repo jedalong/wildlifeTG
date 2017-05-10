@@ -41,30 +41,24 @@ internalTS <- function(ta,t,Tai,Tib,tl,Tshort,sigma,timefun,c2,clipPPS){
   sigma2 <- ((1-(ta/t))^2 + (ta/t)^2)*sigma^2
   #uses cosine function to adjust locational uncertainty (highest near telemetry fixes, lowest away from them)
   #sigma2 <-(sigma^2/2)*(cos(ta/t*(2*pi))+1)   #division by 2 due to upward shift of cosine function
-  w <- focalWeight(r,sqrt(sigma2),type='Gauss')
-  if (dim(w)[1]> 1){ Pt <- focal(r,w,sum,pad=T,padValue=0) }   #just check to see if it makes a viable Gaussian function
+  w <- focalWeight(Pt,sqrt(sigma2),type='Gauss')
+  if (dim(w)[1]> 1){ Pt <- focal(Pt,w,sum,pad=T,padValue=0) }   #just check to see if it makes a viable Gaussian function
   ####==============================
   
-  #If clipPPS = TRUE: set to zero outside of PPS
+  
+  #If clipPPS = TRUE: set to Inf outside of PPS
   if (clipPPS){
-    #Compute forward ST cone from point a
-    m <- matrix(c(0,ta,1,ta,Inf,0),ncol=3,byrow=T)
-    Tai <- reclassify(Tai,m)
-    #Compute backward ST cone from point b
-    m <- matrix(c(0,tb,1,tb,Inf,0),ncol=3,byrow=T)
-    Tib <- reclassify(Tib,m)
-    #Compute the binary PPS
-    PPS <- Tai*Tib
-    #Check that there exists some locations in the PPS
-    ## NEED TO ADD IN AN ERROR CHECKING MECHANISM HERE ##
-    #if (cellStats(PPS,'max') == 0 ){
-    #  next
-    #}
-    r <- r*PPS 
+    Tai[which(Tai > ta)] <- 0   #Compute forward ST cone from point a
+    Tai[which(Tai <= ta)] <- 1
+    Tib[which(Tib > tb)] <- 0   #Compute backward ST cone from point b
+    Tai[which(Tib <= tb)] <- 1
+    PPS <- Pt*0
+    setValues(PPS,Tai*Tib)
+    Pt <- Pt*PPS
   }
-  
+
   #C1 Parameter = Normalize so that probability at any given time sums to 1.
-  r <- r / cellStats(r,stat='sum')
+  Pt <- Pt / cellStats(Pt,stat='sum')
   
-  return(getValues(r))
+  return(getValues(Pt))
 }

@@ -61,7 +61,7 @@ fbtgTS <- function(traj,tk,tl,sigma,timefun='inverse',c2=1,clipPPS=TRUE){
   #Compute the time slice using internalTS function
   Pt <- internalTS(ta,t,Tai,Tib,raster(tl),Tshort,sigma,timefun,c2,clipPPS)
   #Make raster
-  Pt <- setValues(raster(tl),Pt)          
+  Pt <- setValues(raster::raster(tl),Pt)          
   
   #Pt[Pt == 0] <- NA
   return(Pt)
