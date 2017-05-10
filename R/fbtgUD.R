@@ -55,7 +55,7 @@ fbtgUD <- function(traj,tl,timefun='inverse',c2=1,sigma=0,k=100,clipPPS=TRUE,d.m
   n <- dim(df)[1]-1
   for (i in 1:n){
     print(i)
-    pi <- pi + internalSEG(i, df, tl, k, sigma, timefun, c2, clipPPS)
+    Pi <- Pi + internalSEG(i, df, tl, k, sigma, timefun, c2, clipPPS)
   }
   #P.V <- getValues(Pi)
   #P.I <- vapply(ind,internalSEG,FUN.VALUE=P.V, df, gr, k, sigma, timefun, c2, clipPPS)
