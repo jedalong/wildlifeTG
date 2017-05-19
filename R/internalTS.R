@@ -46,14 +46,22 @@ internalTS <- function(ta,t,Tai,Tib,tl,Tshort,sigma,timefun,c2,clipPPS){
   ####==============================
   
   
-  #If clipPPS = TRUE: set to Inf outside of PPS
+  #If clipPPS = TRUE: set to Inf outside of PPS, expand due to location uncertainty if sigma > 0.
+  #
   if (clipPPS){
-    Tai[which(Tai > ta)] <- 0   #Compute forward ST cone from point a
-    Tai[which(Tai <= ta)] <- 1
-    Tib[which(Tib > tb)] <- 0   #Compute backward ST cone from point b
-    Tai[which(Tib <= tb)] <- 1
+    ppsa <- Tai*0
+    ppsb <- Tib*0
+    ppsa[which(Tai <=ta)] <- 1
+    ppsb[which(Tib <=tb)] <- 1
     PPS <- Pt*0
-    setValues(PPS,Tai*Tib)
+    PPS <- setValues(PPS,ppsa*ppsb)
+    #Include location uncertainty in clipping of PPS
+    if (dim(w)[1]>1){
+      kk <- trunc(dim(w)[1]/2)*mean(res(PPS))
+      PPS[Which(PPS == 0)] <- NA
+      PPS <- buffer(PPS,width=kk)
+      PPS[is.na(PPS)] <- 0
+    }
     Pt <- Pt*PPS
   }
 

@@ -29,6 +29,8 @@ internalSEG <- function(j, df, tl, k, sigma, timefun, c2, clipPPS){
   xy <- rbind(A,B)
   t <- df$dt[j]
   
+  #Tai <- JaccCost(tl,A,'out')
+  #Tib <- JaccCost(tl,B,'in')
   Ai <- cellFromXY(raster(tl),A)
   Bi <- cellFromXY(raster(tl),B)
   
@@ -39,7 +41,7 @@ internalSEG <- function(j, df, tl, k, sigma, timefun, c2, clipPPS){
   E(gr)$weight <- 1/E(gr)$weight
   Tai <- distances(gr,v=Ai,to=V(gr),mode='out')
   Tib <- distances(gr,v=Bi,to=V(gr),mode='in')
-
+  
   #compute the cost of the shortest path
   Tshort <- costDistance(tl,A,B)[1]
   #time slices used to estimate prism

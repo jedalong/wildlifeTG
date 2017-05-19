@@ -47,13 +47,18 @@ fbtgTS <- function(traj,tk,tl,sigma,timefun='inverse',c2=1,clipPPS=TRUE){
   ta <- as.numeric(tk-df$date[1],units='secs')
   tb <- as.numeric(df$date[2]-tk,units='secs')
 
+  #Tai <- JaccCost(tl,A,'out')
+  #Tib <- JaccCost(tl,B,'in')
+  Ai <- cellFromXY(raster(tl),A)
+  Bi <- cellFromXY(raster(tl),B)
+  
+  #Compute Accumulated cost (i.e, time) for location A and B
   #This is the value input for various functions
   tm <- transitionMatrix(tl)
   gr <- graph.adjacency(tm, mode="directed", weighted=TRUE)
-  E(gr)$weight <- 1/E(gr)$weight		
-  Tai <- distances(gr,v=A,to=V(gr),mode='out')
-  Tib <- distances(gr,v=C,to=V(gr),mode='in')
-  rm(list=c('tm','gr'))
+  E(gr)$weight <- 1/E(gr)$weight
+  Tai <- distances(gr,v=Ai,to=V(gr),mode='out')
+  Tib <- distances(gr,v=Bi,to=V(gr),mode='in')
   
   #compute the cost of the shortest path
   Tshort <- costDistance(tl,A,B)[1]
@@ -61,7 +66,7 @@ fbtgTS <- function(traj,tk,tl,sigma,timefun='inverse',c2=1,clipPPS=TRUE){
   #Compute the time slice using internalTS function
   Pt <- internalTS(ta,t,Tai,Tib,raster(tl),Tshort,sigma,timefun,c2,clipPPS)
   #Make raster
-  Pt <- setValues(raster::raster(tl),Pt)          
+  Pt <- setValues(raster(tl),Pt)          
   
   #Pt[Pt == 0] <- NA
   return(Pt)
