@@ -20,7 +20,7 @@
 #' @param min upper bound for \code{c2} testing range (default = 1)
 #' @param length.out used to define precision of \code{c2} values tested, using \code{seq(min,max,length.out=length.out)}
 #' @param rand if \code{NA} (the default) every second segment is evauluated (n/2), otherwise an integer indicating how many random segments to test.
-#' @param parallel the number of parralel processors to use (see the \code{foreach} package), default = 1.
+#' @param parallel the number of parralel processors to use (see the \code{foreach} package), default = 1 (Not Used).
 #' @param plot logical, whether or not to plot the log-likelihood curve.
 #' 
 #' @return
@@ -56,13 +56,13 @@ likec2 <- function(traj,tl,timefun,min=0,max=1,length.out=50,rand=NA,parallel=1,
   }
 
   c2. <- seq(min,max,length.out=length.out)
-  #pi.mat <- matrix(nrow=length(ii),ncol=length.out)
+  pi.mat <- matrix(nrow=length(ii),ncol=length.out)
   
   #Parallelize
-  cl<-makeCluster(parallel)
-  registerDoParallel(cl)
-  pi.mat <- foreach(i=1:length(ii),.combine=rbind,.packages=pckgs) %dopar% {
-  #for (i in 1:length(ii)){
+  #cl<-makeCluster(parallel)
+  #registerDoParallel(cl)
+  #pi.mat <- foreach(i=1:length(ii),.combine=rbind,.packages=pckgs) %dopar% {
+  for (i in 1:length(ii)){
     j <- ii[i]
     
     A <- as.numeric(x[j,c('x','y')])
@@ -83,17 +83,16 @@ likec2 <- function(traj,tl,timefun,min=0,max=1,length.out=50,rand=NA,parallel=1,
     d1 <- distances(gr,v=Ai,to=V(gr),mode='out')
     d2 <- distances(gr,v=Ci,to=V(gr),mode='in')
     rm(list=c('tm','gr'))
-    Ts <- costDistance(tr,A,C)
+    Ts <- costDistance(tl,A,C)
     del <- t1 / (t1+t2)
     
     Ti <- abs(d1[1,] - del*Ts) + abs(d2[1,] - (1-del)*Ts) 
     Zi <- Ti[Bi]
     
     #compute the likelihood
-    pi <- sapply(c2.,PiFun,Ti,Zi,timefun)
-    pi
+    pi.mat[i,] <- sapply(c2.,PiFun,Ti,Zi,timefun)
   }
-  stopCluster(cl)
+  #stopCluster(cl)
   
   #Calculate the log-likelihood
   pi.mat <- log(pi.mat)
