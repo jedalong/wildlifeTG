@@ -54,7 +54,7 @@ fbtgUD <- function(traj,tl,timefun='inverse',c2=1,sigma=0,k=100,clipPPS=TRUE,d.m
   #Compute the values for each Time Slice using internalTS function
   n <- dim(df)[1]-1
   for (i in 1:n){
-    print(i)
+    progress(i,progress.bar=TRUE)
     Pi <- Pi + internalSEG(i, df, tl, k, sigma, timefun, c2, clipPPS)
   }
   #P.V <- getValues(Pi)

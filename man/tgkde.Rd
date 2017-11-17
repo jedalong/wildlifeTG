@@ -4,7 +4,7 @@
 \alias{tgkde}
 \title{Time geographic kernel density estimation}
 \usage{
-tgkde(traj, disfun = "inv", grid = NA, ...)
+tgkde(traj, disfun = "inv", c2 = 1, grid = NA, ...)
 }
 \arguments{
 \item{traj}{an object of the class \code{ltraj} which contains the time-stamped movement fixes of the first object. Note this object must be a \code{type II ltraj} object. For more information on objects of this type see \code{ help(ltraj)}.}

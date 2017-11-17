@@ -27,7 +27,7 @@ likec2(traj, tl, timefun, min = 0, max = 1, length.out = 50, rand = NA,
 
 \item{rand}{if \code{NA} (the default) every second segment is evauluated (n/2), otherwise an integer indicating how many random segments to test.}
 
-\item{parallel}{the number of parralel processors to use (see the \code{foreach} package), default = 1.}
+\item{parallel}{the number of parralel processors to use (see the \code{foreach} package), default = 1 (Not Used).}
 
 \item{plot}{logical, whether or not to plot the log-likelihood curve.}
 

@@ -4,7 +4,7 @@
 \alias{fbtgUD}
 \title{Field-based Time Geography Utilization Distribution}
 \usage{
-fbtgUD(traj, tl, timefun = "inverse", c2 = NA, sigma = 0, k = 100,
+fbtgUD(traj, tl, timefun = "inverse", c2 = 1, sigma = 0, k = 100,
   clipPPS = TRUE, d.min = 0, dt.max = Inf)
 }
 \arguments{
