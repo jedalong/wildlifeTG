@@ -53,14 +53,16 @@ fbtgUD <- function(traj,tl,timefun='inverse',c2=1,sigma=0,k=100,clipPPS=TRUE,d.m
   
   #Compute the values for each Time Slice using internalTS function
   n <- dim(df)[1]-1
+  pb <- txtProgressBar(min=0,max=n,style=3)
   for (i in 1:n){
-    progress(i,progress.bar=TRUE)
     Pi <- Pi + internalSEG(i, df, tl, k, sigma, timefun, c2, clipPPS)
+    #update progress
+    setTxtProgressBar(pb,i)
   }
   #P.V <- getValues(Pi)
   #P.I <- vapply(ind,internalSEG,FUN.VALUE=P.V, df, gr, k, sigma, timefun, c2, clipPPS)
   #Pi <- setValues(Pi, apply(P.I,1,sum))
-  
+    
   
   #Make 0's NA for easy plotting on output
   Pi[Pi == 0] <- NA
