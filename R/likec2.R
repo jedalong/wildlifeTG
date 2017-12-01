@@ -16,6 +16,7 @@
 #' -- \code{'rootexp'} \eqn{= \exp{-c_2 * \sqrt{t}}},\cr
 #' -- \code{'pareto'} \eqn{= \exp{-c_2 * \log{t}}},\cr
 #' -- \code{'lognorm'}\eqn{= \exp{-c_2 * \log{t^2}}}.\cr
+#' @param c1 location uncertainty parameter (see fbtgUD)
 #' @param min lower bound for \code{c2} testing range (default = 0) 
 #' @param min upper bound for \code{c2} testing range (default = 1)
 #' @param length.out used to define precision of \code{c2} values tested, using \code{seq(min,max,length.out=length.out)}
@@ -33,7 +34,7 @@
 #' @export
 #
 # ---- End of roxygen documentation ----
-likec2 <- function(traj,tl,timefun,min=0,max=1,length.out=50,rand=NA,parallel=1,plot=TRUE){
+likec2 <- function(traj,tl,timefun,c1=0,min=0,max=1,length.out=50,rand=NA,parallel=1,plot=TRUE){
   
   pckgs <- c('gdistance')
   
@@ -73,24 +74,27 @@ likec2 <- function(traj,tl,timefun,min=0,max=1,length.out=50,rand=NA,parallel=1,
     Bi <- cellFromXY(raster(tl),B)
     Ci <- cellFromXY(raster(tl),C)
     
-    t1 <- x$dt[j]
-    t2 <- x$dt[j+1]
+    Tshort <- costDistance(tl,A,C)[1]
     
+    #Compute Accumulated cost (i.e, time) for location A and B
     #This is the value input for various functions
     tm <- transitionMatrix(tl)
     gr <- graph.adjacency(tm, mode="directed", weighted=TRUE)
-    E(gr)$weight <- 1/E(gr)$weight		
-    d1 <- distances(gr,v=Ai,to=V(gr),mode='out')
-    d2 <- distances(gr,v=Ci,to=V(gr),mode='in')
-    rm(list=c('tm','gr'))
-    Ts <- costDistance(tl,A,C)
-    del <- t1 / (t1+t2)
+    E(gr)$weight <- 1/E(gr)$weight
+    Tai <- distances(gr,v=Ai,to=V(gr),mode='out')
+    Tib <- distances(gr,v=Ci,to=V(gr),mode='in')
     
-    Ti <- abs(d1[1,] - del*Ts) + abs(d2[1,] - (1-del)*Ts) 
-    Zi <- Ti[Bi]
+    t1 <- x$dt[j]
+    t2 <- x$dt[j+1]
     
+    tt <- t1+t2
+    
+    #Compute the likelihood #highly inefficient nesting of for loops
+    for (k in 1:length(c2.)){
+      pi.mat[i,k] <- internalTS(t1,tt,Tai,Tib,tl,Tshort,sigma=c1,timefun,c2.[k],clipPPS)[Bi]
+    }
     #compute the likelihood
-    pi.mat[i,] <- sapply(c2.,PiFun,Ti,Zi,timefun)
+    #pi.mat[i,] <- sapply(c2.,PiFun,Ti,Zi,timefun)
   }
   #stopCluster(cl)
   
