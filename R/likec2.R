@@ -16,7 +16,7 @@
 #' -- \code{'rootexp'} \eqn{= \exp{-c_2 * \sqrt{t}}},\cr
 #' -- \code{'pareto'} \eqn{= \exp{-c_2 * \log{t}}},\cr
 #' -- \code{'lognorm'}\eqn{= \exp{-c_2 * \log{t^2}}}.\cr
-#' @param c1 location uncertainty parameter (see fbtgUD)
+#' @param sigma location uncertainty parameter (see fbtgUD)
 #' @param min lower bound for \code{c2} testing range (default = 0) 
 #' @param min upper bound for \code{c2} testing range (default = 1)
 #' @param length.out used to define precision of \code{c2} values tested, using \code{seq(min,max,length.out=length.out)}
@@ -34,7 +34,7 @@
 #' @export
 #
 # ---- End of roxygen documentation ----
-likec2 <- function(traj,tl,timefun,c1=0,min=0,max=1,length.out=50,rand=NA,parallel=1,plot=TRUE){
+likec2 <- function(traj,tl,timefun,sigma=0,min=0,max=1,length.out=50,rand=NA,parallel=1,plot=TRUE){
   
   pckgs <- c('gdistance')
   
@@ -62,6 +62,11 @@ likec2 <- function(traj,tl,timefun,c1=0,min=0,max=1,length.out=50,rand=NA,parall
   #Parallelize
   #cl<-makeCluster(parallel)
   #registerDoParallel(cl)
+  
+  tm <- transitionMatrix(tl)
+  gr <- graph.adjacency(tm, mode="directed", weighted=TRUE)
+  E(gr)$weight <- 1/E(gr)$weight
+  
   #pi.mat <- foreach(i=1:length(ii),.combine=rbind,.packages=pckgs) %dopar% {
   for (i in 1:length(ii)){
     j <- ii[i]
@@ -78,9 +83,6 @@ likec2 <- function(traj,tl,timefun,c1=0,min=0,max=1,length.out=50,rand=NA,parall
     
     #Compute Accumulated cost (i.e, time) for location A and B
     #This is the value input for various functions
-    tm <- transitionMatrix(tl)
-    gr <- graph.adjacency(tm, mode="directed", weighted=TRUE)
-    E(gr)$weight <- 1/E(gr)$weight
     Tai <- distances(gr,v=Ai,to=V(gr),mode='out')
     Tib <- distances(gr,v=Ci,to=V(gr),mode='in')
     
@@ -90,6 +92,7 @@ likec2 <- function(traj,tl,timefun,c1=0,min=0,max=1,length.out=50,rand=NA,parall
     tt <- t1+t2
     
     #Compute the likelihood #highly inefficient nesting of for loops
+    clipPPS=FALSE   #For speed reasons always use clipPPS=FALSE!
     for (k in 1:length(c2.)){
       pi.mat[i,k] <- internalTS(t1,tt,Tai,Tib,tl,Tshort,sigma=c1,timefun,c2.[k],clipPPS)[Bi]
     }
