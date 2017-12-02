@@ -60,7 +60,7 @@ internalSEG <- function(j, df, tl, k, sigma, timefun, c2, clipPPS){
   xx[is.na(xx)] <- 0
   if (sigma > 0){
     w <- focalWeight(xx,sigma,type='Gauss')
-    xx <- focal(xx,w,sum,pad=T,padValue=0)
+    if (dim(w)[1]>1){ xx <- focal(xx,w,sum,pad=T,padValue=0) }
   }
   #if (clipPPS){ xx <- xx*(rasterize(xy,raster(tl))*0+1) }
   

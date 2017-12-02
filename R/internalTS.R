@@ -34,7 +34,7 @@ internalTS <- function(ta,t,Tai,Tib,tl,Tshort,sigma,timefun,c2,clipPPS){
   Tfab <- Tfab - min                            #Set minimal time location(s) == 0
   
   Pt <- internalPfun(Tfab,timefun,c2)           #Compute probabilities
-  print(dim(Pt))
+  #print(dim(Pt))
   Pt <- setValues(raster(tl),Pt)                #Make probabilities raster
 
   #####===== Locational UNCERTAINTY ANALYSIS===
