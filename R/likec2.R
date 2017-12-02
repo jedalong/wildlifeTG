@@ -91,7 +91,7 @@ likec2 <- function(traj,tl,timefun,sigma=0,min=0,max=1,length.out=50,rand=NA,par
     
     tt <- t1+t2
     
-    #Compute the likelihood #highly inefficient nesting of for loops
+    #Compute the likelihood #highly inefficient nesting of for loops, how to fix?
     clipPPS=FALSE   #For speed reasons always use clipPPS=FALSE!
     for (k in 1:length(c2.)){
       pi.mat[i,k] <- internalTS(t1,tt,Tai,Tib,tl,Tshort,sigma=sigma,timefun,c2.[k],clipPPS)[Bi]
