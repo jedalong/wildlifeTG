@@ -94,7 +94,7 @@ likec2 <- function(traj,tl,timefun,sigma=0,min=0,max=1,length.out=50,rand=NA,par
     #Compute the likelihood #highly inefficient nesting of for loops
     clipPPS=FALSE   #For speed reasons always use clipPPS=FALSE!
     for (k in 1:length(c2.)){
-      pi.mat[i,k] <- internalTS(t1,tt,Tai,Tib,tl,Tshort,sigma=c1,timefun,c2.[k],clipPPS)[Bi]
+      pi.mat[i,k] <- internalTS(t1,tt,Tai,Tib,tl,Tshort,sigma=sigma,timefun,c2.[k],clipPPS)[Bi]
     }
     #compute the likelihood
     #pi.mat[i,] <- sapply(c2.,PiFun,Ti,Zi,timefun)
