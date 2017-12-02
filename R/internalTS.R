@@ -35,7 +35,7 @@ internalTS <- function(ta,t,Tai,Tib,tl,Tshort,sigma,timefun,c2,clipPPS){
   
   Pt <- internalPfun(Tfab,timefun,c2)           #Compute probabilities
   print(1)
-  Pt <- setValues(raster(Tfab),Pt)                #Make probabilities raster
+  Pt <- setValues(raster(tl),Pt)                #Make probabilities raster
 
   #####===== Locational UNCERTAINTY ANALYSIS===
   #uses same formulation as in Brownian bridge
