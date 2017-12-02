@@ -34,7 +34,7 @@ internalTS <- function(ta,t,Tai,Tib,tl,Tshort,sigma,timefun,c2,clipPPS){
   Tfab <- Tfab - min                            #Set minimal time location(s) == 0
   
   Pt <- internalPfun(Tfab,timefun,c2)           #Compute probabilities
-  print(1)
+  
   Pt <- setValues(raster(tl),Pt)                #Make probabilities raster
 
   #####===== Locational UNCERTAINTY ANALYSIS===
@@ -43,7 +43,7 @@ internalTS <- function(ta,t,Tai,Tib,tl,Tshort,sigma,timefun,c2,clipPPS){
   #uses cosine function to adjust locational uncertainty (highest near telemetry fixes, lowest away from them)
   #sigma2 <-(sigma^2/2)*(cos(ta/t*(2*pi))+1)   #division by 2 due to upward shift of cosine function
   w <- focalWeight(Pt,sqrt(sigma2),type='Gauss')
-  print(2)
+  
   if (dim(w)[1]> 1){ Pt <- focal(Pt,w,sum,pad=T,padValue=0) }   #just check to see if it makes a viable Gaussian function
   ####==============================
   
