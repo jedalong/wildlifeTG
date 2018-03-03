@@ -21,3 +21,6 @@ Imports:
     doParallel,
     parallel,
 RoxygenNote: 5.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
