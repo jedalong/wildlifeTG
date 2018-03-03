@@ -41,8 +41,8 @@ Calculate a quick PPA home range and compare with points:
 
 
 ```r
-library(wildlifeTG,message=F)
-#> Error in library(wildlifeTG, message = F): unused argument (message = F)
+library(wildlifeTG, message = FALSE, warning = FALSE)
+#> Error in library(wildlifeTG, message = FALSE, warning = FALSE): unused arguments (message = FALSE, warning = FALSE)
 
 data(m3)                      #Caribou tracking data
 
