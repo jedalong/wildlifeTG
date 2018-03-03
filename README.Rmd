@@ -36,7 +36,7 @@ Journal of Wildlife Management. 76(2): 407-413.
 
 ### Installation
 
-```{r installation, eval = FALSE, message=FALSE}
+```{r installation, eval = TRUE, message = FALSE, warning = FALSE}
 devtools::install_github("jedalong/wildlifeTG")
 ```
   
@@ -45,7 +45,7 @@ devtools::install_github("jedalong/wildlifeTG")
 Calculate a quick PPA home range and compare with points:
 
 ```{r}
-library(wildlifeTG,message=F)
+library(wildlifeTG, message = FALSE, warning = FALSE)
 
 data(m3)                      #Caribou tracking data
 
