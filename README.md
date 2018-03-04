@@ -1,15 +1,12 @@
 ---
-output:
-  md_document:
-    variant: markdown_github
+output: github_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 
 
-
-## wildlifeTG: Time Geographic Home Range Analysis
+# wildlifeTG: Time Geographic Home Range Analysis
 
 Methods for performing time geographic home range analysis as described in the papers:
 
@@ -28,14 +25,14 @@ delineating areas of sustained wildlife use. Annals of GIS. 21(1): 81-90.
 Long, J.A., Nelson, T.A. (2012) Time geography and wildlife home range delineation.
 Journal of Wildlife Management. 76(2): 407-413.
 
-### Installation
+## Installation
 
 
 ```r
 devtools::install_github("jedalong/wildlifeTG")
 ```
   
-### Quick demo
+## Quick demo
 
 Calculate a quick PPA home range and compare with points:
 
