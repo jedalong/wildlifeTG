@@ -9,23 +9,36 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+The wildlifeTG package provides access to functions for time geographic analysis of wildlife telemetry data. Specifically, the methods are targeted at home range analysis and related ideas.
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+The methods are described in the following papers:
 
-## Vignette Info
+Long, J.A. (2018) Modelling movement probabilities within heterogeneous spatial fields. Journal
+of Spatial Information Science. Accepted: 2017-12-18.
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+Long, J.A., Webb, S.L., Nelson, T.A., Gee, K. (2015) Mapping areas of spatial-temporal
+overlap from wildlife telemetry data. Movement Ecology. 3:38.
 
-## Styles
+Long, J.A., Nelson, T.A. (2015) Home range and habitat analysis using dynamic time
+geography. Journal of Wildlife Management. 79(3): 481-490.
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+Nelson, T.A., Long, J.A., Laberee, K., Stewart, B.P. (2015) A time geographic approach for
+delineating areas of sustained wildlife use. Annals of GIS. 21(1): 81-90.
 
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
+Long, J.A., Nelson, T.A. (2012) Time geography and wildlife home range delineation.
+Journal of Wildlife Management. 76(2): 407-413.
+
+##Installation
+
+Currently, installation is only supported via GitHub, may put it on CRAN eventually.
+
+```{r installation, eval = TRUE, message = FALSE, warning = FALSE}
+devtools::install_github("jedalong/wildlifeTG")
+```
+
+##Telemetry Data for Examples
+
+A small dataset showing the movement of a caribou
 
 ## Figures
 
