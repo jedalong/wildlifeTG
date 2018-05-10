@@ -9,6 +9,7 @@
 #'
 #' @param traj an object of the class \code{ltraj} which contains the time-stamped movement fixes of the first object. Note this object must be a \code{type II ltraj} object. For more information on objects of this type see \code{ help(ltraj)}.
 #' @param disfun one of { \code{'inv', 'inv2', 'exp', 'norm'} } representing the shape of the distance decay function used to model movement probabilities within the geoellipse (see Downs et al. (2011) for more information). 
+#' @param c2 parameter used to control shape of different distance decay functions, default = 1.
 #' @param grid spatial resolution (pixel size) of output utilization raster in appropriate units. Default is chosen based on the x and y range of the input telemetry data. Alternatively, a \code{RasterLayer} can be passed in upon which the UD is computed.
 #' @param ... additional parameters to be passed to the function \code{dynvmax}. For example, should include options for \code{dynamic} and \code{method}; see the documentation for \code{dynvmax} for more detailed information on what to include here.
 #'    
