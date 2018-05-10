@@ -38,4 +38,3 @@ Calculates the field-based time geography probability surface for an animal for 
 \seealso{
 ppa, fbtgTS, volras
 }
-

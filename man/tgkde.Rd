@@ -31,4 +31,3 @@ Downs, J.A., Horner, M.W., Tucker, A.D. (2011) Time-geographic density estimatio
 \seealso{
 dynvmax, dynppa, volras
 }
-

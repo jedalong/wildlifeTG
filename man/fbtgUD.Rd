@@ -47,4 +47,3 @@ Calculates the field-based time geography utilization distribution (UD) for an a
 \seealso{
 ppa, likec2
 }
-

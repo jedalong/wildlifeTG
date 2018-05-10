@@ -9,7 +9,7 @@
 #' @param traj animal movement trajectory in the form of an \code{ltraj} object, see package \code{adehabitatLT}
 #' @param r a \code{RasterLayer} object describing the preference/permeability of the landscape. May be the result of a resource selection function, or other analyses. Note: Higher values should be associated higher preference or permeability.
 #' @param min lower bound for \code{theta} testing range (default = 0) 
-#' @param min upper bound for \code{theta} testing range (default = 1)
+#' @param max upper bound for \code{theta} testing range (default = 1)
 #' @param rand an integer indicating how many random segments to test.
 #' @param niter used to define maximum number of iterations of golden-search routine.
 #' @param tolerance used to define precision of golden search routine (i.e., routine stops when the absolute difference between two consecutive test points is below this value). 

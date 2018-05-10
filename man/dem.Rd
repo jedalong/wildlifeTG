@@ -12,4 +12,3 @@ Digital elevation data, to be used alongside the caribou data for demonstrating 
 A digital elevation model for the Caribou study area at 100 m. It has been clipped to the area where telemetry data is present. It is projected using the NAD83 UTM Zone 8N projection.
 }
 \keyword{datasets}
-

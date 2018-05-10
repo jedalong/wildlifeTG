@@ -33,4 +33,3 @@ Internal function for computing Pi for segments.
 Used in the \code{fbtg} function.
 }
 \keyword{internal}
-

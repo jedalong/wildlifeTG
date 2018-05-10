@@ -18,7 +18,7 @@
 #' -- \code{'lognorm'}\eqn{= \exp{-c_2 * \log{t^2}}}.\cr
 #' @param sigma location uncertainty parameter (see fbtgUD)
 #' @param min lower bound for \code{c2} testing range (default = 0) 
-#' @param min upper bound for \code{c2} testing range (default = 1)
+#' @param max upper bound for \code{c2} testing range (default = 1)
 #' @param rand if \code{NA} (the default) every second segment is evauluated (n/2), otherwise an integer indicating how many random segments to test.
 #' @param niter used to define maximum number of iterations of golden-search routine
 #' @param tolerance used to define precision of golden search routine (i.e., routine stops when the absolute difference between two consecutive test points is below this value). 

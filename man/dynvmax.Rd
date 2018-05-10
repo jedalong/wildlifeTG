@@ -77,4 +77,3 @@ Long, JA, Nelson, TA. (2012) Time geography and wildlife home range delineation.
 \seealso{
 dynppa
 }
-

@@ -17,8 +17,9 @@
 #' -- \code{'rootexp'} \eqn{= \exp{-c_2 * \sqrt{t}}},\cr
 #' -- \code{'pareto'} \eqn{= \exp{-c_2 * \log{t}}},\cr
 #' -- \code{'lognorm'}\eqn{= \exp{-c_2 * \log{t^2}}}.\cr
+#' @param sigma locational uncertainty parameter for Guassian error kernel, default=0.
 #' @param c2 Parameter input into \code{timefun} default=1, see details.
-#' @param k number of time slices between fixes upon which to estimate the UD, default=10.
+#' @param clipPPS (logical) whether or not the output probabilities should be clipped to the potential path space, default=TRUE.
 #'
 #' @return
 #'   This function returns a \code{RasterLayer} which can be used to estimate the UD of an animal.
@@ -31,7 +32,7 @@
 #
 # ---- End of roxygen documentation ----
 
-fbtgTS <- function(traj,tk,tl,sigma,timefun='inverse',c2=1,clipPPS=TRUE){
+fbtgTS <- function(traj,tk,tl,timefun='inverse',sigma=0,c2=1,clipPPS=TRUE){
   
   df <- ld(traj)
   

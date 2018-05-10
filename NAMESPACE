@@ -2,10 +2,13 @@
 
 export(dynppa)
 export(dynvmax)
+export(estc2)
+export(esttheta)
 export(fbtgTS)
 export(fbtgUD)
 export(jppa)
 export(likec2)
+export(rspUD)
 export(segtraj)
 export(sma)
 export(tgkde)

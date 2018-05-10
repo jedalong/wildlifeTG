@@ -32,4 +32,3 @@ Internal function for calculating ellipses in time geographic analysis.
 dynppa
 }
 \keyword{internal}
-

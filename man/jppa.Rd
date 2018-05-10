@@ -60,4 +60,3 @@ Long, J.A., Webb, S.L., Nelson, T.A., Gee, K. (2015) Mapping areas of spatial-te
 \seealso{
 dynvmax, dynppa
 }
-

@@ -15,4 +15,3 @@ Landcover data see Wulder et al. (2008) that has been re-sampled using a modal f
 Wulder, M., White, J., Cranny, M., Hall, R., Luther, J., Beaudoin, A. (2008) Monitoring Canada's forests-Part 1: Completion of the EOSD land cover project. Canadian Journal of Remote Sensing. 34(6): 549-562.
 }
 \keyword{datasets}
-

@@ -1,16 +1,23 @@
-wildilfeTG 0.4
+wildilfeTG 0.0.4
+================
+* 2018-05-10
+* rspUD function
+* full working package
+
+
+wildilfeTG 0.0.4
 ================
 * 2017-04-07
 * Working version of fbtgUD function
 * New internal functions
 
 
-wildlifeTG 0.3
+wildlifeTG 0.0.3
 ================
 * 2016-09-20
 * Added several new functions relating to field based time geography model.
 
-WildlifeTG 0.2
+WildlifeTG 0.0.2
 ================
 * 12-05-2015 - fixed bug in jppa causing error.
 
@@ -18,7 +25,7 @@ WildlifeTG 0.2
 	     - Added function jppa, for computing joint potential path area, following Long et al. (in Prep).
 
 
-WildlifeTG 0.1
+WildlifeTG 0.0.1
 =================
 * 22-12-2014 -  Modified version for supplementary material at Journal of Wildlife Management.
 	     -  Introduced functionality for handling projection strings

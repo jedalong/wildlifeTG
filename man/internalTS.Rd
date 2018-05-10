@@ -35,4 +35,3 @@ Internal function for computing time slices.
 Used in the \code{fbtg} function.
 }
 \keyword{internal}
-

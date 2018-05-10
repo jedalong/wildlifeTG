@@ -30,4 +30,3 @@ Internal function for computing movement probabilities.
 Used in the fbtg function.
 }
 \keyword{internal}
-

@@ -13,4 +13,3 @@ The package \code{wildlifeTG} provides tools for performing time geographic anal
 \author{
 Jed Long
 }
-

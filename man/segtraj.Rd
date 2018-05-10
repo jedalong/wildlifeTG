@@ -24,4 +24,3 @@ Using the \code{classIntervals} function from the \code{classInt} package perfor
 \details{
 The segementation is based on a single trajectory attribute (default is the movement distance). The default method for performing the segmentation is the Fisher-Jenks algorithm, but many are available (see the full list in the documentation for the \code{classIntervals} function).
 }
-

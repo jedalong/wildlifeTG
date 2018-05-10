@@ -16,4 +16,3 @@ data(m3)
 plot(m3)
 }
 \keyword{datasets}
-

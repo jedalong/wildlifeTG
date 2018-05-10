@@ -47,4 +47,3 @@ Nelson, T.A., Long, J.A., Laberee, K., Stewart, B.P. (2015) A time geographic ap
 \seealso{
 dynvmax, dynppa
 }
-
