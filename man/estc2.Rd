@@ -25,6 +25,8 @@ estc2(traj, tl, timefun = "exp", sigma = 0, min = 0, max = 1,
 
 \item{min}{lower bound for \code{c2} testing range (default = 0)}
 
+\item{max}{upper bound for \code{c2} testing range (default = 1)}
+
 \item{rand}{if \code{NA} (the default) every second segment is evauluated (n/2), otherwise an integer indicating how many random segments to test.}
 
 \item{niter}{used to define maximum number of iterations of golden-search routine}
@@ -32,8 +34,6 @@ estc2(traj, tl, timefun = "exp", sigma = 0, min = 0, max = 1,
 \item{tolerance}{used to define precision of golden search routine (i.e., routine stops when the absolute difference between two consecutive test points is below this value).}
 
 \item{plot}{logical, whether or not to plot the log-likelihood curve.}
-
-\item{min}{upper bound for \code{c2} testing range (default = 1)}
 }
 \value{
 This function returns a numerical value estimate for \code{c2} associated with the maximum of the log-likelihood.

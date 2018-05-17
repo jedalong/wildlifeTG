@@ -15,7 +15,6 @@
 #' @param tolerance used to define precision of golden search routine (i.e., routine stops when the absolute difference between two consecutive test points is below this value). 
 #' @param dmin (defaults to \code{res(r)[1]}) the minimum movement distance to use as random samples. See details.
 #' @param plot logical, whether or not to plot the log-likelihood curve.
-#' 
 #'
 #' @return
 #'   This function returns an estimate for the theta parameter which can be used with the rspUD function.
@@ -24,6 +23,9 @@
 # @keywords 
 #' @seealso rspUD
 # @examples
+#' @importFrom graphics abline points
+#' @importFrom utils txtProgressBar setTxtProgressBar
+#' @importFrom igraph E V distances graph.adjacency
 #' @export
 #
 # ---- End of roxygen documentation ----

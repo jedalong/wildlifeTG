@@ -10,8 +10,7 @@
 #'
 #' @author Jed Long
 # @references
-#'
-#' @import methods sp gdistance adehabitatLT adehabitatHR rgeos raster classInt foreach doParallel parallel
+#'@Imports methods sp gdistance adehabitatLT adehabitatHR rgeos raster classInt Matrix devtools
 #' @docType package
 #' @name wildlifeTG-package
 NULL

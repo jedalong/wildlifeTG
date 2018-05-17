@@ -14,6 +14,8 @@ esttheta(traj, r, min = 0, max = 1, niter = 100, tolerance = 0,
 
 \item{min}{lower bound for \code{theta} testing range (default = 0)}
 
+\item{max}{upper bound for \code{theta} testing range (default = 1)}
+
 \item{niter}{used to define maximum number of iterations of golden-search routine.}
 
 \item{tolerance}{used to define precision of golden search routine (i.e., routine stops when the absolute difference between two consecutive test points is below this value).}
@@ -23,8 +25,6 @@ esttheta(traj, r, min = 0, max = 1, niter = 100, tolerance = 0,
 \item{dmin}{(defaults to \code{res(r)[1]}) the minimum movement distance to use as random samples. See details.}
 
 \item{plot}{logical, whether or not to plot the log-likelihood curve.}
-
-\item{min}{upper bound for \code{theta} testing range (default = 1)}
 }
 \value{
 This function returns an estimate for the theta parameter which can be used with the rspUD function.

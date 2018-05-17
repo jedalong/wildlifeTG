@@ -33,6 +33,7 @@
 # @keywords 
 #' @seealso ppa, likec2
 # @examples
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @export
 #
 # ---- End of roxygen documentation ----

@@ -18,6 +18,8 @@
 # @keywords 
 #' @seealso ppa, fbtgUD
 # @examples
+#' @importFrom utils txtProgressBar setTxtProgressBar
+#' @importFrom igraph E V distances graph.adjacency
 #' @export
 #
 # ---- End of roxygen documentation ----

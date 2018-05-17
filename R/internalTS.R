@@ -18,7 +18,7 @@
 #' 
 #' @return
 #'   This function returns a \code{RasterLayer} of the probabilities for time slice ta.
-#'
+#' @importFrom igraph E V distances graph.adjacency
 #' @keywords internal 
 # ---- End of roxygen documentation ----
 

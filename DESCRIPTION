@@ -17,11 +17,8 @@ Imports:
     rgeos,
     raster,
     classInt,
-    igraph,
     Matrix,
-    graphics,
-    utils,
-    raster
+    devtools
 RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown

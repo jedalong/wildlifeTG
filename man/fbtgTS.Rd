@@ -4,7 +4,8 @@
 \alias{fbtgTS}
 \title{Field-based Time Geography Utilization Distribution}
 \usage{
-fbtgTS(traj, tk, tl, sigma, timefun = "inverse", c2 = 1, clipPPS = TRUE)
+fbtgTS(traj, tk, tl, timefun = "inverse", sigma = 0, c2 = 1,
+  clipPPS = TRUE)
 }
 \arguments{
 \item{traj}{animal movement trajectory in the form of an \code{ltraj} object, see package \code{adehabitatLT}}
@@ -22,9 +23,11 @@ fbtgTS(traj, tk, tl, sigma, timefun = "inverse", c2 = 1, clipPPS = TRUE)
 -- \code{'pareto'} \eqn{= \exp{-c_2 * \log{t}}},\cr
 -- \code{'lognorm'}\eqn{= \exp{-c_2 * \log{t^2}}}.\cr}
 
+\item{sigma}{locational uncertainty parameter for Guassian error kernel, default=0.}
+
 \item{c2}{Parameter input into \code{timefun} default=1, see details.}
 
-\item{k}{number of time slices between fixes upon which to estimate the UD, default=10.}
+\item{clipPPS}{(logical) whether or not the output probabilities should be clipped to the potential path space, default=TRUE.}
 }
 \value{
 This function returns a \code{RasterLayer} which can be used to estimate the UD of an animal.
