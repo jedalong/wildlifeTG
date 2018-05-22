@@ -64,11 +64,17 @@ The function \code{dynvmax} represents an intermediary function used to extend a
 The \code{class} method is the preferred choice, as it allows the use of more sophisticated models for identifying behavioural shifts in telemetry data where we would expect to see clear differences in the Vmax parameter based on changing movement behaviour.\cr\cr 
 The use of the \code{'focal'} or \code{'cumulative'} dynamic methods uses a moving window approach, which is sensitive to edge effects at the initial and ending times of the trajectory. Thus, the dynamic Vmax parameter is only computed for those segments that have a valid window and the dataset is shrunk by \code{w-1} segments.
 }
+\examples{
+m3R <- dynvmax(m3,dynamic='focal',method='Robson')
+m3V <- dynvmax(m3,dynamic='focal',method='vanderWatt')
+m3c <- dynvmax(m3,dynamic='cumulative')
+
+}
 \references{
 Long, JA, Nelson, TA. (2012) Time geography and wildlife home range delineation. \emph{Journal 
   of Wildlife Management}. 76(2):407-413.\cr\cr
-  Long, JA, Nelson, TA. (2014) Home range and habitat analysis using dynamic time geography. \emph{Journal of 
-  Wildlife Management}. Accepted: 2014-12-03.\cr\cr
+  Long, JA, Nelson, TA. (2015) Home range and habitat analysis using dynamic time geography. \emph{Journal of -
+  Wildlife Management}. 79(3):481-490.\cr\cr
   Robson, DS, Whitlock, JH. (1964) Estimation of a truncation point. \emph{Biometrika}
   51:33-39.\cr\cr
   van der Watt, P. (1980) A note on estimation bounds of random variables. \emph{Biometrika}

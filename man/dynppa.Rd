@@ -48,6 +48,14 @@ The function \code{dyn.ppa} represents an extension to an existing PPA method (L
   parameter according to wildlife behaviour. See the function \code{dyn.vmax} for more information on how 
   to incorporate dynamic behaviour into the vmax parameter estimation.
 }
+\examples{
+data(m3)
+ppa1 <- dynppa(m3,method='vanderWatt')
+ppa2 <- dynppa(m3,method='vanderWatt',dynamic='focal')
+plot(ppa1)
+plot(ppa2,add=T,border='red')
+
+}
 \references{
 Long, JA, Nelson, TA. (2012) Time geography and wildlife home range delineation. \emph{Journal of Wildlife
   Management}, 76(2):407-413.\cr \cr

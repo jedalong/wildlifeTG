@@ -2,7 +2,7 @@
 % Please edit documentation in R/fbtgTS.R
 \name{fbtgTS}
 \alias{fbtgTS}
-\title{Field-based Time Geography Utilization Distribution}
+\title{Time specific utilization distribution}
 \usage{
 fbtgTS(traj, tk, tl, timefun = "inverse", sigma = 0, c2 = 1,
   clipPPS = TRUE)
@@ -30,14 +30,14 @@ fbtgTS(traj, tk, tl, timefun = "inverse", sigma = 0, c2 = 1,
 \item{clipPPS}{(logical) whether or not the output probabilities should be clipped to the potential path space, default=TRUE.}
 }
 \value{
-This function returns a \code{RasterLayer} which can be used to estimate the UD of an animal.
+This function returns a \code{RasterLayer} which can be used to estimate the time specific UD of an animal.
 }
 \description{
-Calculate the utilization distribution of an animal using the field-based time geographic model.
+Calculate the utilization distribution of an animal using the field-based time geographic model for a specific time.
 }
 \details{
-Calculates the field-based time geography probability surface for an animal for a chosen time - often called a time slice. Field-based time geography is based on an underlying resistance surface, which constratins potential movement by the animal between two location fixes. The output probability surface represents the probability of finding an animal in a given location at the input time, based on the field-based time geography movement model.
+Calculates the field-based time geography probability surface for an animal for a chosen time - often called a time slice. Field-based time geography is based on an underlying resistance surface, which constrains potential movement by the animal between two location fixes. The output probability surface represents the probability of finding an animal in a given location at the input time, based on the field-based time geography movement model.
 }
 \seealso{
-ppa, fbtgTS, volras
+dynppa, fbtgUD, volras
 }

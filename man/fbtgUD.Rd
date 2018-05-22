@@ -41,9 +41,9 @@ Calculate the utilization distribution of an animal using the field-based time g
 }
 \details{
 Calculates the field-based time geography utilization distribution (UD) for an animal. Field-based time geography is based on an underlying resistance surface, which constratins potential movement by the animal between two location fixes. This model is applied recursively over an entire trajectory in order to compute a UD for an animal. The UD inherently considers the movement limitations described by the underlying resistance surface, and thus is considered a landscape-based model for a UD. The landscape-based approach deviates from current models building upon random walks and diffusion processes. \cr
-  The model requires that the resistance surface be directly related to an animals speed of passing through that environment.
-  The timefun parameter is used to choose the model for converting time into a probability based on the described function. The \code{c2} parameter can be used to tune these functions based on some fine-scale movement data if available, but defaults to a value of 1. The sigma parameter represents the locational uncertainty, which can be interpreted as the standard deviation of the location error in a similar fashion to what is done in Brownian bridge models. The parameter k, which defines how many 'time slices' are to be computed, is the most significant influencer of computational time. Lower values will result speed up computations, but result in less-smooth output UD surfaces.
+  The model requires that the resistance surface be directly related to an animals speed of passing through that environment.\cr
+  The timefun parameter is used to choose the model for converting time into a probability based on the described function. The \code{c2} parameter can be used to tune these functions based on some fine-scale movement data if available, but defaults to a value of 1. The sigma parameter represents the locational uncertainty, which can be interpreted as the standard deviation of the location error in a similar fashion to what is done in Brownian bridge models. The parameter k, which defines how many 'time slices' are to be computed, has the most significant influence on computational time. Lower values for k will speed up computations, but result in less-smooth output UD surfaces.
 }
 \seealso{
-ppa, likec2
+dynppa, estc2, fbtgTS, volras
 }

@@ -32,6 +32,6 @@ This function returns a \code{RasterLayer} of the probabilities for time slice t
 Internal function for computing time slices.
 }
 \details{
-Used in the \code{fbtg} function.
+Used in the \code{fbtgUD/TS} functions.
 }
 \keyword{internal}

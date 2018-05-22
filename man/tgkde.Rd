@@ -27,6 +27,12 @@ Compute the time geographic kernel density estimate of an animals utilization di
 The function \code{tgkde} can be used to delineate an animals home range using the time geographic kernel density estimation procedure described by Downs et al. (2011). Specifically, it modifies the shape of the traditional kernel to consider the time geographic limits of movement opportunity - termed the geoellipse by Downs, which is analagous to the potential path area concept described by Long & Nelson (2012,2015). Several basic functions -- including inverse distance, inverse distance squared, exponential, and normal -- can be used to quantify movement probabilities within the geoellipse. The output is then the utilization distribution of the animal, confined to the accessibility space defined by the potential path area home range as in Long & Nelson (2012,2015).
   The function \code{volras} can be used to extract volume contours (e.g., 95% volume contour) which are commonly used to delineate home ranges based on the utilization distribution.
 }
+\examples{
+data(m3)
+ud <- tgkde(m3,disfun='inv',method='vanderWatt')
+plot(ud)
+
+}
 \references{
 Downs, J.A., Horner, M.W., Tucker, A.D. (2011) Time-geographic density estimation for home range analysis. Annals of GIS. 17(3): 163-171.
 }

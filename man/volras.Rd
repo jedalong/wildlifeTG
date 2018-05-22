@@ -11,7 +11,7 @@ volras(x, percent = 95, simplify = TRUE)
 
 \item{percent}{a percent value to get the volume contour, e.g., 95. Note: This is a simple function and only accepts one value at a time.}
 
-\item{simplify}{(logical; default = TRUE) whether or not to simplify the output home range polygon using \code{gSimplify} with a tolerance value of 1.5 times the spatial resolution of the UD.}
+\item{simplify}{(logical; default = TRUE) whether or not to simplify the output home range polygon using \code{gSimplify} from \code{rgeos} with a tolerance value of 1.5 times the spatial resolution of the UD.}
 }
 \value{
 A \code{SpatialPolygonsDataFrame}.
@@ -21,4 +21,15 @@ Compute a percent volume contour polygon from a raster UD.
 }
 \details{
 The volras function is a simpler version of the getvolumeUD function from the package \code{adehabitatHR} developed by C. Calenge. It allows the output to be a 'raster looking' polygon (i.e., the cells that are within the UD) or a simplified (smoothed) polygon.
+}
+\examples{
+data(m3)
+ud <- tgkde(m3,disfun='inv',method='vanderWatt')
+plot(ud)
+hr <- volras(ud,95)
+plot(hr,add=T)
+
+}
+\seealso{
+fbtgUD, rspUD, tgkde
 }
