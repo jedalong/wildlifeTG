@@ -1,6 +1,6 @@
 #' Land cover data for northern BC, Canada
 #'
-#' Land cover data (from the EOSD), to be used alongside the caribou data for demonstrating field-based time geography. 
+#' Land cover data to be used in examples and vignettes alongside the caribou telemetry data. 
 #' 
 #' Landcover data see Wulder et al. (2008) that has been re-sampled using a modal filter to a 100 m resolution and clipped to the area where the telemetry data is present.
 #'

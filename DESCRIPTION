@@ -2,10 +2,10 @@ Package: wildlifeTG
 Type: Package
 Title: Time Geograhic Analysis of Wildlife Telemetry Data
 Version: 0.1
-Date: 2018-05-10
+Date: 2018-05-22
 Author: Jed Long
 Maintainer: Jed Long <jed.long@st-andrews.ac.uk>
-Description: A set of methods for performing time geographic analysis of animal tracking data. The functions provide useful tools for examining wildflife movement from the context of accessibility. The time geographic framework is an alternative view on typical home range estimation procedures. Please note that the package is still under development. Please see the wildlifeTG GitHub page https://github.com/jedalong/wildlifeTG for the latest information and most up-to-date version of the package.
+Description: A set of methods for performing time geographic analysis of animal tracking data. The functions provide useful tools for examining wildflife movement from the context of accessibility. The time geographic framework is an alternative view on typical home range estimation procedures. Please see the wildlifeTG GitHub page https://github.com/jedalong/wildlifeTG for the latest information and most up-to-date version of the package.
 URL: https://github.com/jedalong/wildlifeTG
 License: GPL-3
 Imports:

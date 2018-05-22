@@ -6,7 +6,7 @@
 \title{Land cover data for northern BC, Canada}
 \format{A \code{RasterLayer} with 275 rows and 347 columns.}
 \description{
-Land cover data (from the EOSD), to be used alongside the caribou data for demonstrating field-based time geography.
+Land cover data to be used in examples and vignettes alongside the caribou telemetry data.
 }
 \details{
 Landcover data see Wulder et al. (2008) that has been re-sampled using a modal filter to a 100 m resolution and clipped to the area where the telemetry data is present.
