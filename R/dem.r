@@ -1,4 +1,4 @@
-#' Digital elevation data for northern BC, Canada
+#' Digital elevation data for study area in BC, Canada
 #'
 #' Digital elevation data, to be used alongside the caribou data for demonstrating field-based time geography. 
 #' 
@@ -10,8 +10,8 @@
 #' @keywords datasets
 #' @format A \code{RasterLayer} with 275 rows and 347 columns.
 #' @name dem
-# @examples
-# data(dem)
-# plot(dem)
+#' @examples
+#' data(dem)
+#' plot(dem)
 #-----------------------------------
 NULL

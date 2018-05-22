@@ -17,7 +17,10 @@
 # @references
 # @keywords
 # @seealso 
-# @examples
+#' @examples
+#' data(m3)
+#' m3seg <- segtraj(m3)
+#' 
 #' @export
 #
 # ---- End of roxygen documentation ----

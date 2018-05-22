@@ -8,7 +8,7 @@
 #'   The function \code{sma} can be used to map slow movement areas identifiable from wildlife telemetry data.of potential interaction between two animals. Slow movement areas can be ranked, according to their importance, which equates to consecutive time spent in an area. That is, the first slow movement area will be the area where the animal stayed the longest, and so on. Thus, slow movement areas can be useful for identifying where encamped behaviour or intensively exploited habitat on the landscape.
 #'
 #' @param traj an object of the class \code{ltraj} which contains the time-stamped
-#'    movement fixes of the first object. Note this object must be a \code{type II
+#'    movement fixes of the animal. Note this object must be a \code{type II
 #'    ltraj} object. For more information on objects of this type see \code{help(ltraj)}.
 #' @param sma.keep an integer value indicating the number of slow movement areas to delineate, default is 1.
 #' @param sma.tol a value <= 1 indicating used when sma.keep > 1 to define how much overlap is allowed between SMA's, if sma.tol=1 no overlap is allowed, if sma.tol=0, any and all overlap is allowed. Typically something in between is most useful. Defaults to 1.
@@ -32,7 +32,10 @@
 #' Nelson, T.A., Long, J.A., Laberee, K., Stewart, B.P. (2015) A time geographic approach for delineating areas of sustained wildlife use. Annals of GIS. 21(1): 81-90.
 # @keywords 
 #' @seealso dynvmax, dynppa
-# @examples
+#' @examples
+#' data(m3)
+#' sm1 <- sma(m3,method='vanderWatt')
+#' sm2 <- sma(m3,sma.keep=2,method='vanderWatt')
 #' 
 #' @export
 #

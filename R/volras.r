@@ -8,15 +8,19 @@
 #'   
 #' @param x a \code{RasterLayer}
 #' @param percent a percent value to get the volume contour, e.g., 95. Note: This is a simple function and only accepts one value at a time.
-#' @param simplify (logical; default = TRUE) whether or not to simplify the output home range polygon using \code{gSimplify} with a tolerance value of 1.5 times the spatial resolution of the UD. 
+#' @param simplify (logical; default = TRUE) whether or not to simplify the output home range polygon using \code{gSimplify} from \code{rgeos} with a tolerance value of 1.5 times the spatial resolution of the UD. 
 #' 
 #' @return
 #'   A \code{SpatialPolygonsDataFrame}.
 #'
-# @references
-# @keywords internal 
-# @seealso 
-# @examples
+#' @seealso fbtgUD, rspUD, tgkde
+#' @examples
+#' data(m3)
+#' ud <- tgkde(m3,disfun='inv',method='vanderWatt')
+#' plot(ud)
+#' hr <- volras(ud,95)
+#' plot(hr,add=T)
+#' 
 #' @export
 #
 # ---- End of roxygen documentation ----

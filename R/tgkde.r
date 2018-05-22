@@ -20,7 +20,10 @@
 #' Downs, J.A., Horner, M.W., Tucker, A.D. (2011) Time-geographic density estimation for home range analysis. Annals of GIS. 17(3): 163-171.
 # @keywords 
 #' @seealso dynvmax, dynppa, volras
-# @examples
+#' @examples
+#' data(m3)
+#' ud <- tgkde(m3,disfun='inv',method='vanderWatt')
+#' plot(ud)
 #' 
 #' @export
 #
@@ -111,12 +114,3 @@ tgkde <- function(traj,disfun='inv',c2=1,grid=NA,...){
   #----------------------------
   return(ras)
 }
-#=============DEMO==========================
-# traj <- simm.crw(1:500)
-# trDF <- ld(traj)
-# outras <- tgkde(traj,grid=0.25)
-# #Draw the plot
-# library(fields)
-# image(outras,xlab="X",ylab="Y",asp=1)
-# lines(trDF$x,trDF$y)
-#============================================

@@ -51,15 +51,18 @@
 #' @references
 #'   Long, JA, Nelson, TA. (2012) Time geography and wildlife home range delineation. \emph{Journal 
 #'   of Wildlife Management}. 76(2):407-413.\cr\cr
-#'   Long, JA, Nelson, TA. (2014) Home range and habitat analysis using dynamic time geography. \emph{Journal of 
-#'   Wildlife Management}. Accepted: 2014-12-03.\cr\cr
+#'   Long, JA, Nelson, TA. (2015) Home range and habitat analysis using dynamic time geography. \emph{Journal of -
+#'   Wildlife Management}. 79(3):481-490.\cr\cr
 #'   Robson, DS, Whitlock, JH. (1964) Estimation of a truncation point. \emph{Biometrika}
 #'   51:33-39.\cr\cr
 #'   van der Watt, P. (1980) A note on estimation bounds of random variables. \emph{Biometrika}
 #'   67(3):712-714.\cr
 # @keywords 
 #' @seealso dynppa
-# @examples
+#' @examples
+#' m3R <- dynvmax(m3,dynamic='focal',method='Robson')
+#' m3V <- dynvmax(m3,dynamic='focal',method='vanderWatt')
+#' m3c <- dynvmax(m3,dynamic='cumulative')
 #' 
 #' @export
 #

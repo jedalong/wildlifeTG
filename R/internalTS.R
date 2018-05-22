@@ -4,7 +4,7 @@
 #' @description
 #'   Internal function for computing time slices.
 #' @details
-#'   Used in the \code{fbtg} function. 
+#'   Used in the \code{fbtgUD/TS} functions. 
 #'   
 #' @param ta time point of the slice.
 #' @param t total duration of the segment.
@@ -18,7 +18,6 @@
 #' 
 #' @return
 #'   This function returns a \code{RasterLayer} of the probabilities for time slice ta.
-#' @importFrom igraph E V distances graph.adjacency
 #' @keywords internal 
 # ---- End of roxygen documentation ----
 

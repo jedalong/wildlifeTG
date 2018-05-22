@@ -43,7 +43,12 @@
 #'   
 # @keywords 
 #' @seealso dynvmax
-# @examples
+#' @examples 
+#' data(m3)
+#' ppa1 <- dynppa(m3,method='vanderWatt')
+#' ppa2 <- dynppa(m3,method='vanderWatt',dynamic='focal')
+#' plot(ppa1)
+#' plot(ppa2,add=T,border='red')
 #' 
 #' @export
 #

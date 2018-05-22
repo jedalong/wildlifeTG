@@ -33,9 +33,9 @@
 # @examples
 #' @importFrom graphics abline points
 #' @importFrom utils txtProgressBar setTxtProgressBar
-#' @importFrom igraph E V distances graph.adjacency
 #' @export
 # ---- End of roxygen documentation ----
+
 estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tolerance=0.01,plot=TRUE){
   
   #use leave-one-out bootstrap to estimate theta in a similar fashion to proposed by Horne et al. 2007 as is commonly used with Brownian bridge, can speed up by chosing smaller number of random segments to test.

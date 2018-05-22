@@ -4,7 +4,7 @@
 #' @description
 #'   Calculate the utilization distribution of an animal based on randomised shortest paths between fixes.
 #' @details
-#' Still under development, but should work.
+#' A randomised shortest path model is fit between every pair of fixes. The randomised shortest path model is derived from the \code{passage} function in the package \code{gdistance}. It uses the net number of packages (see \code{?passage}) to estimate the probability and then scales the values appropriately. An input \code{rasterLayer} object is required which defines the ability for movement through the landscape, which might typically be derived from a resource selection function, or be related to known barriers on the landscape. It requires only a single parameter \code{theta} which can be estimated from the data using the function \code{esttheta}. 
 #'   
 #' @param traj animal movement trajectory in the form of an \code{ltraj} object, see package \code{adehabitatLT}
 #' @param r a \code{RasterLayer} object describing the preference/affinity of the landscape. May be the result of a resource selection function, or other analyses. Note: Higher values should be associated higher affinity.
@@ -14,12 +14,11 @@
 #' @return
 #'   This function returns a \code{RasterLayer} which can be used to estimate the UD of an animal.
 #'
-# @references
+#' @references Long, J.A. Estimating wildlife utilization distributions using randomized shortest paths. (in Preparation)
 # @keywords 
-#' @seealso ppa, fbtgUD
+#' @seealso esttheta, volras
 # @examples
 #' @importFrom utils txtProgressBar setTxtProgressBar
-#' @importFrom igraph E V distances graph.adjacency
 #' @export
 #
 # ---- End of roxygen documentation ----

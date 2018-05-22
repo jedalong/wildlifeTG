@@ -4,7 +4,7 @@
 #' @description
 #'   Internal function for computing Pi for segments.
 #' @details
-#'   Used in the \code{fbtg} function. 
+#'   Used in the \code{fbtgUD/TS} functions. 
 #'   
 #' @param j index of the segment.
 #' @param df trajectory dataframe (from \code{ld(traj)})
@@ -17,7 +17,6 @@
 #' 
 #' @return
 #'   This function returns a \code{RasterLayer} of the probabilities for time slice ta.
-#' @importFrom igraph E V distances graph.adjacency
 #' @keywords internal 
 # ---- End of roxygen documentation ----
 
