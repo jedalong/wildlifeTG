@@ -60,6 +60,7 @@
 # @keywords 
 #' @seealso dynppa
 #' @examples
+#' data(m3)
 #' m3R <- dynvmax(m3,dynamic='focal',method='Robson')
 #' m3V <- dynvmax(m3,dynamic='focal',method='vanderWatt')
 #' m3c <- dynvmax(m3,dynamic='cumulative')

@@ -30,7 +30,7 @@ The function \code{tgkde} can be used to delineate an animals home range using t
 \examples{
 data(m3)
 ud <- tgkde(m3,disfun='inv',method='vanderWatt')
-plot(ud)
+raster::plot(ud)
 
 }
 \references{

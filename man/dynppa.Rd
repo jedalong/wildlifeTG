@@ -52,8 +52,8 @@ The function \code{dyn.ppa} represents an extension to an existing PPA method (L
 data(m3)
 ppa1 <- dynppa(m3,method='vanderWatt')
 ppa2 <- dynppa(m3,method='vanderWatt',dynamic='focal')
-plot(ppa1)
-plot(ppa2,add=T,border='red')
+sp::plot(ppa1)
+sp::plot(ppa2,add=TRUE,border='red')
 
 }
 \references{

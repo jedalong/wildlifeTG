@@ -25,9 +25,9 @@ The volras function is a simpler version of the getvolumeUD function from the pa
 \examples{
 data(m3)
 ud <- tgkde(m3,disfun='inv',method='vanderWatt')
-plot(ud)
+raster::plot(ud)
 hr <- volras(ud,95)
-plot(hr,add=T)
+sp::plot(hr,add=TRUE)
 
 }
 \seealso{

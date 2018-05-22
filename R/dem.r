@@ -12,6 +12,6 @@
 #' @name dem
 #' @examples
 #' data(dem)
-#' plot(dem)
+#' raster::plot(dem)
 #-----------------------------------
 NULL

@@ -23,7 +23,7 @@
 #' @examples
 #' data(m3)
 #' ud <- tgkde(m3,disfun='inv',method='vanderWatt')
-#' plot(ud)
+#' raster::plot(ud)
 #' 
 #' @export
 #

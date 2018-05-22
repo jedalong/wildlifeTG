@@ -13,6 +13,6 @@
 #' @name eosd
 #' @examples
 #' data(eosd)
-#' plot(eosd)
+#' raster::plot(eosd)
 #-----------------------------------
 NULL

@@ -65,6 +65,7 @@ The \code{class} method is the preferred choice, as it allows the use of more so
 The use of the \code{'focal'} or \code{'cumulative'} dynamic methods uses a moving window approach, which is sensitive to edge effects at the initial and ending times of the trajectory. Thus, the dynamic Vmax parameter is only computed for those segments that have a valid window and the dataset is shrunk by \code{w-1} segments.
 }
 \examples{
+data(m3)
 m3R <- dynvmax(m3,dynamic='focal',method='Robson')
 m3V <- dynvmax(m3,dynamic='focal',method='vanderWatt')
 m3c <- dynvmax(m3,dynamic='cumulative')

@@ -13,6 +13,6 @@ A digital elevation model for the Caribou study area at 100 m. It has been clipp
 }
 \examples{
 data(dem)
-plot(dem)
+raster::plot(dem)
 }
 \keyword{datasets}
