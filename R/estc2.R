@@ -60,8 +60,8 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
     B <- SpatialPoints(x[ii+1,c('x','y')])
     C <- SpatialPoints(x[ii+2,c('x','y')])
     Ai <- cellFromXY(raster(tl),A)
-    Bi <- cellFromXY(raster(tl),A)
-    Ci <- cellFromXY(raster(tl),A)
+    Bi <- cellFromXY(raster(tl),B)
+    Ci <- cellFromXY(raster(tl),C)
     
     Tshort <- diag(costDistance(tl,A,C))
     Tai <- distances(gr,v=Ai,to=V(gr),mode='out')
