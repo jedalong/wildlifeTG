@@ -38,7 +38,7 @@
 
 estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tolerance=0.01,plot=TRUE){
   
-  #use leave-one-out bootstrap to estimate theta in a similar fashion to proposed by Horne et al. 2007 as is commonly used with Brownian bridge, can speed up by chosing smaller number of random segments to test.
+  #use leave-one-out bootstrap to estimate c2 in a similar fashion to proposed by Horne et al. 2007 as is commonly used with Brownian bridge, can speed up by chosing smaller number of random segments to test.
   x <- ld(traj)
   n <- dim(x)[1]
   if (is.na(rand)){
@@ -51,25 +51,25 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
   gr <- graph.adjacency(tm, mode="directed", weighted=TRUE)
   E(gr)$weight <- 1/E(gr)$weight
   
+  A <- SpatialPoints(x[ii,c('x','y')])
+  B <- SpatialPoints(x[ii+1,c('x','y')])
+  C <- SpatialPoints(x[ii+2,c('x','y')])
+  Ai <- cellFromXY(raster(tl),A)
+  Bi <- cellFromXY(raster(tl),B)
+  Ci <- cellFromXY(raster(tl),C)
+  
+  Tshort <- diag(costDistance(tl,A,C))
+  Tai <- distances(gr,v=Ai,to=V(gr),mode='out')
+  Tib <- distances(gr,v=Ci,to=V(gr),mode='in')
+  t1 <- x$dt[ii]
+  t2 <- x$dt[ii+1]
+  tt <- t1+t2
+  pz <- 0*ii
   
   ### Golden Search Routine
   
   #internal likelihood funciton
-  c2func <- function(c2,ii,gr,tl,sigma,timefun){
-    A <- SpatialPoints(x[ii,c('x','y')])
-    B <- SpatialPoints(x[ii+1,c('x','y')])
-    C <- SpatialPoints(x[ii+2,c('x','y')])
-    Ai <- cellFromXY(raster(tl),A)
-    Bi <- cellFromXY(raster(tl),B)
-    Ci <- cellFromXY(raster(tl),C)
-    
-    Tshort <- diag(costDistance(tl,A,C))
-    Tai <- distances(gr,v=Ai,to=V(gr),mode='out')
-    Tib <- distances(gr,v=Ci,to=V(gr),mode='in')
-    t1 <- x$dt[ii]
-    t2 <- x$dt[ii+1]
-    tt <- t1+t2
-    pz <- 0*ii
+  c2func <- function(c2,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt){
     for (i in 1:length(ii)){
       #Compute the likelihood for each segment
       pz[i] <- internalTS(t1[i],tt[i],Tai[i,],Tib[i,],tl,Tshort[i],sigma=sigma,timefun,c2,clipPPS=FALSE)[Bi[i]]
@@ -92,9 +92,9 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
   lower.bound <- min
   
   ### Evaluate the function at the extremes
-  fmin = c2func(min,ii,gr,tl,sigma,timefun)
+  fmin = c2func(lower.bound,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
   cat('1 \n')
-  fmax = c2func(max,ii,gr,tl,sigma,timefun)
+  fmax = c2func(upper.bound,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
   cat('2 \n')
   
   ### Use the golden ratio to set the initial test points
@@ -102,9 +102,9 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
   x2 = lower.bound + golden.ratio*(upper.bound - lower.bound)
   
   ### Evaluate the function at the first test points
-  f1 <- c2func(x1,ii,gr,tl,sigma,timefun)
+  f1 <- c2func(x1,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
   cat('3 \n')
-  f2 <- c2func(x2,ii,gr,tl,sigma,timefun)
+  f2 <- c2func(x2,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
   cat('4 \n')
   ### Output values storage
   c2.val <- c(min,max,x1,x2)
@@ -121,7 +121,7 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
       x2 = x1
       f2 = f1
       x1 = upper.bound - golden.ratio*(upper.bound - lower.bound)
-      f1 = c2func(x1,ii,gr,tl,sigma,timefun)
+      f1 = c2func(x1,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
       c2.val <- c(c2.val,x1)
       LL.val <- c(LL.val,f1)
     } else {
@@ -129,7 +129,7 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
       x1 = x2
       f1 = f2
       x2 = lower.bound + golden.ratio*(upper.bound - lower.bound)
-      f2 = c2func(x2,ii,gr,tl,sigma,timefun)
+      f2 = c2func(x2,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
       c2.val <- c(c2.val,x2)
       LL.val <- c(LL.val,f2)
     }
