@@ -69,7 +69,7 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
   ### Golden Search Routine
   
   #internal likelihood funciton
-  c2func <- function(c2,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt){
+  c2func <- function(c2,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt){
     for (i in 1:length(ii)){
       #Compute the likelihood for each segment
       pz[i] <- internalTS(t1[i],tt[i],Tai[i,],Tib[i,],tl,Tshort[i],sigma=sigma,timefun,c2,clipPPS=FALSE)[Bi[i]]
@@ -92,9 +92,9 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
   lower.bound <- min
   
   ### Evaluate the function at the extremes
-  fmin = c2func(lower.bound,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
+  fmin = c2func(lower.bound,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
   cat('1 \n')
-  fmax = c2func(upper.bound,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
+  fmax = c2func(upper.bound,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
   cat('2 \n')
   
   ### Use the golden ratio to set the initial test points
@@ -102,12 +102,12 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
   x2 = lower.bound + golden.ratio*(upper.bound - lower.bound)
   
   ### Evaluate the function at the first test points
-  f1 <- c2func(x1,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
+  f1 <- c2func(x1,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
   cat('3 \n')
-  f2 <- c2func(x2,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
+  f2 <- c2func(x2,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
   cat('4 \n')
   ### Output values storage
-  c2.val <- c(min,max,x1,x2)
+  c2.val <- c(lower.bound,upper.bound,x1,x2)
   LL.val <- c(fmin,fmax,f1,f2)
   
   #Search
@@ -121,7 +121,7 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
       x2 = x1
       f2 = f1
       x1 = upper.bound - golden.ratio*(upper.bound - lower.bound)
-      f1 = c2func(x1,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
+      f1 = c2func(x1,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
       c2.val <- c(c2.val,x1)
       LL.val <- c(LL.val,f1)
     } else {
@@ -129,7 +129,7 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
       x1 = x2
       f1 = f2
       x2 = lower.bound + golden.ratio*(upper.bound - lower.bound)
-      f2 = c2func(x2,ii,gr,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
+      f2 = c2func(x2,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
       c2.val <- c(c2.val,x2)
       LL.val <- c(LL.val,f2)
     }
