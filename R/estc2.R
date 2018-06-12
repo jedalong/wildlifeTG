@@ -17,8 +17,8 @@
 #' -- \code{'pareto'} \eqn{= \exp{-c_2 * \log{t}}},\cr
 #' -- \code{'lognorm'}\eqn{= \exp{-c_2 * \log{t^2}}}.\cr
 #' @param sigma location uncertainty parameter (see fbtgUD)
-#' @param min lower bound for \code{c2} testing range (default = 0) 
-#' @param max upper bound for \code{c2} testing range (default = 1)
+#' @param lower lower bound for \code{c2} testing range (default = 0) 
+#' @param upper upper bound for \code{c2} testing range (default = 1)
 #' @param rand if \code{NA} (the default) every second segment is evauluated (n/2), otherwise an integer indicating how many random segments to test.
 #' @param niter used to define maximum number of iterations of golden-search routine
 #' @param tolerance used to define precision of golden search routine (i.e., routine stops when the absolute difference between two consecutive test points is below this value). 
@@ -36,7 +36,7 @@
 #' @export
 # ---- End of roxygen documentation ----
 
-estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tolerance=0.01,plot=TRUE){
+estc2 <- function(traj,tl,timefun='exp',sigma=0,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,plot=TRUE){
   
   #use leave-one-out bootstrap to estimate c2 in a similar fashion to proposed by Horne et al. 2007 as is commonly used with Brownian bridge, can speed up by chosing smaller number of random segments to test.
   x <- ld(traj)
@@ -88,18 +88,15 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
   
   golden.ratio = 2/(sqrt(5) + 1)
   
-  upper.bound <- max
-  lower.bound <- min
-  
   ### Evaluate the function at the extremes
-  fmin = c2func(lower.bound,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
+  fmin = c2func(lower,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
   cat('1 \n')
-  fmax = c2func(upper.bound,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
+  fmax = c2func(upper,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
   cat('2 \n')
   
   ### Use the golden ratio to set the initial test points
-  x1 = upper.bound - golden.ratio*(upper.bound - lower.bound)
-  x2 = lower.bound + golden.ratio*(upper.bound - lower.bound)
+  x1 = upper - golden.ratio*(upper - lower)
+  x2 = lower + golden.ratio*(upper - lower)
   
   ### Evaluate the function at the first test points
   f1 <- c2func(x1,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
@@ -107,37 +104,37 @@ estc2 <- function(traj,tl,timefun='exp',sigma=0,min=0,max=1,rand=NA,niter=10,tol
   f2 <- c2func(x2,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
   cat('4 \n')
   ### Output values storage
-  c2.val <- c(lower.bound,upper.bound,x1,x2)
+  c2.val <- c(lower,upper,x1,x2)
   LL.val <- c(fmin,fmax,f1,f2)
   
   #Search
   iteration = 0
   #Progress Bar
   
-  while (iteration < (niter-4) & abs(upper.bound - lower.bound) > tolerance){
+  while (iteration < (niter-4) & abs(upper - lower) > tolerance){
     iteration = iteration + 1
     if (f2 > f1){
-      upper.bound = x2
+      upper = x2
       x2 = x1
       f2 = f1
-      x1 = upper.bound - golden.ratio*(upper.bound - lower.bound)
+      x1 = upper - golden.ratio*(upper - lower)
       f1 = c2func(x1,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
       c2.val <- c(c2.val,x1)
       LL.val <- c(LL.val,f1)
     } else {
-      lower.bound = x1
+      lower = x1
       x1 = x2
       f1 = f2
-      x2 = lower.bound + golden.ratio*(upper.bound - lower.bound)
+      x2 = lower + golden.ratio*(upper - lower)
       f2 = c2func(x2,ii,tl,sigma,timefun,x,Ai,Bi,Ci,Tshort,Tai,Tib,tt)
       c2.val <- c(c2.val,x2)
       LL.val <- c(LL.val,f2)
     }
     #update progress bar
-    est.min = (lower.bound + upper.bound)/2
+    est.min = (lower + upper)/2
     cat(paste(iteration+4,' c2.est = ',est.min,'\n'))
   }
-  #est.min = (lower.bound + upper.bound)/2
+  #est.min = (lower + upper)/2
 
   if (plot){
     ord <- order(c2.val)
