@@ -101,9 +101,9 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance = 0.01,pl
   } else {
     ii <- sample(1:(n-2),rand)
   }
-  
-  #dmin=res(r)[1]
-  #ii <- ii[which(x$dist[ii] > dmin)]   #Only use movement fixes 
+  #Only use movement fixes 
+  dmin=res(r)[1]
+  ii <- ii[which(x$dist[ii] > dmin)]   
   
   #Make *Symmetric* TransitionLayer from raster (e.g., avg cells)
   s1 <- function(x){x[1]}
