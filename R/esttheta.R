@@ -95,7 +95,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance = 0.01,pl
   
   #use leave-one-out bootstrap to estimate theta in a similar fashion to proposed by Horne et al. 2007 as is commonly used with Brownian bridge, can speed up by chosing smaller number of random segments to test.
   x <- ld(traj)
-  n <- dim(x)
+  n <- dim(x)[1]
   if (is.na(rand)){
     ii <- seq(1,(n-2),by=2)
   } else {
