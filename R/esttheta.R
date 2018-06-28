@@ -8,12 +8,11 @@
 #'   
 #' @param traj animal movement trajectory in the form of an \code{ltraj} object, see package \code{adehabitatLT}
 #' @param r a \code{RasterLayer} object describing the preference/permeability of the landscape. May be the result of a resource selection function, or other analyses. Note: Higher values should be associated higher preference or permeability.
-#' @param min lower bound for \code{theta} testing range (default = 0) 
-#' @param max upper bound for \code{theta} testing range (default = 1)
-#' @param rand an integer indicating how many random segments to test.
-#' @param niter used to define maximum number of iterations of golden-search routine.
+#' @param lower lower bound for \code{theta} testing range (default = 0) 
+#' @param upper upper bound for \code{theta} testing range (default = 1)
+#' @param rand if \code{NA} (the default) every second segment is evauluated (n/2), otherwise an integer indicating how many random segments to test.
+#' @param niter used to define maximum number of iterations of golden-search routine
 #' @param tolerance used to define precision of golden search routine (i.e., routine stops when the absolute difference between two consecutive test points is below this value). 
-#' @param dmin (defaults to \code{res(r)[1]}) the minimum movement distance to use as random samples. See details.
 #' @param plot logical, whether or not to plot the log-likelihood curve.
 #'
 #' @return
@@ -29,7 +28,7 @@
 #
 # ---- End of roxygen documentation ----
 
-esttheta <- function(traj,r,min=0,max=1,niter=100,tolerance = 0,rand=10,dmin=res(r)[1],plot=TRUE){
+esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance = 0.01,plot=TRUE){
   
 
   #Function to alter tran matrix from gdistance
@@ -96,9 +95,15 @@ esttheta <- function(traj,r,min=0,max=1,niter=100,tolerance = 0,rand=10,dmin=res
   
   #use leave-one-out bootstrap to estimate theta in a similar fashion to proposed by Horne et al. 2007 as is commonly used with Brownian bridge, can speed up by chosing smaller number of random segments to test.
   x <- ld(traj)
-  n <- dim(x)[1]
-  ii <- which(x$dist[1:(n-2)] > dmin)   #Only use movement fixes 
-  ii <- sample(ii,rand)
+  n <- dim(x)
+  if (is.na(rand)){
+    ii <- seq(1,(n-2),by=2)
+  } else {
+    ii <- sample(1:(n-2),rand)
+  }
+  
+  #dmin=res(r)[1]
+  #ii <- ii[which(x$dist[ii] > dmin)]   #Only use movement fixes 
   
   #Make *Symmetric* TransitionLayer from raster (e.g., avg cells)
   s1 <- function(x){x[1]}
@@ -127,18 +132,15 @@ esttheta <- function(traj,r,min=0,max=1,niter=100,tolerance = 0,rand=10,dmin=res
 
   golden.ratio = 2/(sqrt(5) + 1)
   
-  upper.bound <- max
-  lower.bound <- min
-  
   ### Evaluate the function at the extremes
-  fmin = thetafunc(min,x,ii,tm,tc,trR,P,Id,nr,nc)
+  fmin = thetafunc(lower,x,ii,tm,tc,trR,P,Id,nr,nc)
   cat('1 \n')
-  fmax = thetafunc(max,x,ii,tm,tc,trR,P,Id,nr,nc)
+  fmax = thetafunc(upper,x,ii,tm,tc,trR,P,Id,nr,nc)
   cat('2 \n')
                    
   ### Use the golden ratio to set the initial test points
-  x1 = upper.bound - golden.ratio*(upper.bound - lower.bound)
-  x2 = lower.bound + golden.ratio*(upper.bound - lower.bound)
+  x1 = upper - golden.ratio*(upper - lower)
+  x2 = lower + golden.ratio*(upper - lower)
   
   ### Evaluate the function at the first test points
   f1 = thetafunc(x1,x,ii,tm,tc,trR,P,Id,nr,nc)
@@ -146,37 +148,37 @@ esttheta <- function(traj,r,min=0,max=1,niter=100,tolerance = 0,rand=10,dmin=res
   f2 = thetafunc(x2,x,ii,tm,tc,trR,P,Id,nr,nc)
   cat('4 \n')
   ### Output values storage
-  theta.val <- c(min,max,x1,x2)
+  theta.val <- c(lower,upper,x1,x2)
   LL.val <- c(fmin,fmax,f1,f2)
   
   #Search
   iteration = 0
   #Progress Bar
 
-  while (iteration < (niter-4) & abs(upper.bound - lower.bound) > tolerance){
+  while (iteration < (niter-4) & abs(upper - lower) > tolerance){
     iteration = iteration + 1
     if (f2 > f1){
-      upper.bound = x2
+      upper = x2
       x2 = x1
       f2 = f1
-      x1 = upper.bound - golden.ratio*(upper.bound - lower.bound)
+      x1 = upper - golden.ratio*(upper - lower)
       f1 = thetafunc(x1,x,ii,tm,tc,trR,P,Id,nr,nc)
       theta.val <- c(theta.val,x1)
       LL.val <- c(LL.val,f1)
     } else {
-      lower.bound = x1
+      lower = x1
       x1 = x2
       f1 = f2
-      x2 = lower.bound + golden.ratio*(upper.bound - lower.bound)
+      x2 = lower + golden.ratio*(upper - lower)
       f2 = thetafunc(x2,x,ii,tm,tc,trR,P,Id,nr,nc)
       theta.val <- c(theta.val,x2)
       LL.val <- c(LL.val,f2)
     }
     #update progress bar
-    est.min = (lower.bound + upper.bound)/2
+    est.min = (lower + upper)/2
     cat(paste(iteration+4,' theta.est = ',est.min,'\n'))
   }
-  #est.min = (lower.bound + upper.bound)/2
+  #est.min = (lower + upper)/2
   
   if (plot){
     ord <- order(theta.val)
