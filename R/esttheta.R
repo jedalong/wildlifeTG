@@ -13,6 +13,7 @@
 #' @param rand if \code{NA} (the default) every second segment is evauluated (n/2), otherwise an integer indicating how many random segments to test.
 #' @param niter used to define maximum number of iterations of golden-search routine
 #' @param tolerance used to define precision of golden search routine (i.e., routine stops when the absolute difference between two consecutive test points is below this value). 
+#' @param dmin Use only segments where the movement distance is greater than dmin (default is 0 or all segments).
 #' @param plot logical, whether or not to plot the log-likelihood curve.
 #'
 #' @return
@@ -28,7 +29,7 @@
 #
 # ---- End of roxygen documentation ----
 
-esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance = 0.01,plot=TRUE){
+esttheta_ <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance = 0.01,res=0,plot=TRUE){
   
 
   #Function to alter tran matrix from gdistance
@@ -101,9 +102,8 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance = 0.01,pl
   } else {
     ii <- sample(1:(n-2),rand)
   }
-  #Only use movement fixes - reduces n is this appropriate. 
-  #dmin=res(r)[1]
-  #ii <- ii[which(x$dist[ii] > dmin & x$dist[ii+1] > dmin)]   
+  #Only use movement fixes - reduces number of segments in test. 
+  ii <- ii[which(x$dist[ii] >= dmin & x$dist[ii+1] >= dmin)]   
   
   #Make *Symmetric* TransitionLayer from raster (e.g., avg cells)
   s1 <- function(x){x[1]}
