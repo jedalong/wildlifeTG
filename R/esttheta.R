@@ -29,7 +29,7 @@
 #
 # ---- End of roxygen documentation ----
 
-esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance = 0.01,res=0,plot=TRUE){
+esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance = 0.01,dmin=0,plot=TRUE){
   
 
   #Function to alter tran matrix from gdistance
