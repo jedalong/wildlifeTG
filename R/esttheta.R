@@ -40,6 +40,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
     return(x)
   }
   
+  
   #Function to compute LL probability for a set of fixes and a given level of theta
   ### MODIFIED FROM passage function in gdistance
   thetafunc <- function(theta,x,ii,tm,tc,trR,P,Id,nr,nc){
@@ -115,7 +116,8 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   tm <- geoCorrection(tm,type='c',multpl=FALSE)
   
   #Prepare transition matrix for PFUN
-  ts <- tranSolid(tm)
+  #ts <- tranSolid(tm)  *****************
+  ts <- tm
   tc <- transitionCells(ts)
   tr <- transitionMatrix(ts,inflate=FALSE)
   trR <- tr
