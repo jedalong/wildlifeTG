@@ -104,6 +104,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   }
   #Only use movement fixes - reduces number of segments in test. 
   ii <- ii[which(x$dist[ii] >= dmin & x$dist[ii+1] >= dmin)]   
+  print('Using a dmin value of',dmin, ' ; ' paste(length(ii), 'fixes will be used to estimate theta.'))
   
   #Make *Symmetric* TransitionLayer from raster (e.g., avg cells)
   s1 <- function(x){x[1]}
@@ -186,6 +187,6 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
     points(theta.val[ord],-LL.val[ord],type='l')
     abline(v=est.min,col='red')
   }
-  ret.list <- list(theta.min = est.min,n.seg=length(ii))
-  return(ret.list)
+  
+  return(est.min)
 }
