@@ -29,7 +29,7 @@
 #
 # ---- End of roxygen documentation ----
 
-esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance = 0.01,dmin=0,plot=TRUE){
+esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin=0,plot=TRUE){
   
 
   #Function to alter tran matrix from gdistance
@@ -186,6 +186,6 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance = 0.01,dm
     points(theta.val[ord],-LL.val[ord],type='l')
     abline(v=est.min,col='red')
   }
-  
-  return(est.min)
+  ret.list <- list(theta.min = est.min,n.seg=length(ii))
+  return(ret.list)
 }
