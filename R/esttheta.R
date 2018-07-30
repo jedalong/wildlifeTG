@@ -30,62 +30,35 @@
 # ---- End of roxygen documentation ----
 
 esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin=0,plot=TRUE){
-  
 
-  #Function to alter tran matrix from gdistance
-  tranSolid <- function(x){
-    selection <- which(Matrix::rowMeans(gdistance::transitionMatrix(x,inflate=FALSE))>1e-300)
-    x@transitionCells <- x@transitionCells[selection]
-    x@transitionMatrix <- gdistance::transitionMatrix(x,inflate=FALSE)[selection,selection]
-    return(x)
-  }
-  
-  
   #Function to compute LL probability for a set of fixes and a given level of theta
   ### MODIFIED FROM passage function in gdistance
-  thetafunc <- function(theta,x,ii,tm,tc,trR,P,Id,nr,nc){
+  thetafunc <- function(theta,x,ii,tr,r){
     pz <- 0*ii
-    W <- trR
-    W@x <- exp(-theta * trR@x) #zero values are not relevant because of next step
-    W <- W * P
-
     for (i in 1:length(ii)){
       j <- ii[i]
-      a <- SpatialPoints(x[j,c('x','y')])
-      b <- SpatialPoints(x[j+1,c('x','y')])
-      c <- SpatialPoints(x[j+2,c('x','y')])
-      cellnri <- raster::cellFromXY(tm, a)
-      cellnrz <- raster::cellFromXY(tm, b)
-      cellnrj <- raster::cellFromXY(tm, c)
-      ci <- match(cellnri,tc)
-      cz <- match(cellnrz,tc)
-      cj <- match(cellnrj,tc)
-      Ij <- Diagonal(nr)
-      Ij[cbind(cj,cj)] <- 1 - 1 / length(cj)
-      Wj <- Ij %*% W
-      ei <- rep(0,times=nr)
-      ei[ci] <- 1 / length(ci)
-      ej <- rep(0,times=nr)
-      ej[cj] <- 1 / length(cj)
-      IdMinusWj <- as((Id - Wj), "dgCMatrix")
-      zci <- Matrix::solve(t(IdMinusWj),ei) 
-      zcj <- Matrix::solve(IdMinusWj, ej)
-      zcij <- sum(ei*zcj)
-      if(zcij < 1e-300){
-        n <- rep(0,times=nc)
-      } else {
-        N <- (Diagonal(nr, as.vector(zci)) %*% Wj %*% Diagonal(nr, as.vector(zcj))) / zcij
-        
-        # #totalnet = 'total'
-        # n <- pmax(rowSums(N),colSums(N)) #not efficient but effective
-        
-        #totalnet = 'net'
-        nNet <- abs(skewpart(N))
-        n <- pmax(rowSums(nNet),colSums(nNet))
-        n[c(ci,cj)] <- 2 * n[c(ci,cj)]
-      }
-      pz[i] <- n[cz]  
+      sp1 <- SpatialPoints(x[j,c('x','y')])
+      sp2 <- SpatialPoints(x[j+2,c('x','y')])
+      c1 <- raster::cellFromXY(tr,sp1)
+      c2 <- raster::cellFromXY(tr,sp2)
+      if (c1 == c2){
+        #Start and end pixel is the same which means no movement. Need to adjust passage function.
+        # Arbitrarily set end location to the next pixel over (check if edge)
+        ########################################
+        ind <- adjacent(r,c1,pairs=FALSE,id=TRUE)
+        c2 <- ind[which.max(r[ind])]
+        sp2 <- raster::xyFromCell(r,c2,spatial=TRUE)
+        sp2@proj4string <-sp1@proj4string   #this could cause an issue if traj and raster not in same projection
+      } 
+      #Movement Occurs (at least from one cell to another)
+      Pt <- passage(tr,sp1,sp2,theta=theta,totalNet='net')
+      
+      #get midpoint value
+      spz <- SpatialPoints(x[j+1,c('x','y')])  
+      cz <- raster::cellFromXY(Pt, spz)
+      pz[i] <- Pt[cz]
     }
+    
     #Calculate the negative of the log-likelihood - we are using a minimizing golden search function
     LLpz <- -log(pz) 
     #REMOVE -INFs
@@ -103,7 +76,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   } else {
     ii <- sample(1:(n-2),rand)
   }
-  #Only use movement fixes - reduces number of segments in test. 
+  #Can choose to only use movement fixes (based on dmin) - reduces number of segments in test. 
   ii <- ii[which(x$dist[ii] >= dmin & x$dist[ii+1] >= dmin)]   
   print(paste('Using a dmin value of',dmin, ' ; ', length(ii), 'fixes will be used to estimate theta.'))
   
@@ -112,22 +85,9 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   s2 <- function(x){x[2]}
   tr1 <- transition(r, s1, 8,symm=F)
   tr2 <- transition(r, s2, 8,symm=F)
-  tm <- (tr1 + tr2)/2
-  tm <- geoCorrection(tm,type='c',multpl=FALSE)
-  
-  #Prepare transition matrix for PFUN
-  #ts <- tranSolid(tm)  *****************
-  ts <- tm
-  tc <- transitionCells(ts)
-  tr <- transitionMatrix(ts,inflate=FALSE)
-  trR <- tr
-  trR@x <- 1 / trR@x 
-  nr <- dim(tr)[1] 
-  Id <- Diagonal(nr) 
-  rs <- rowSums(tr)
-  rs[rs>0] <- 1/rs[rs>0]
-  P <- tr * rs
-  nc <- ncell(ts)
+  tr <- (tr1 + tr2)/2
+  tr <- geoCorrection(tr,type='c',multpl=FALSE)
+  r <- raster(tr)
   
   #### GOLDEN SEARCH ROUTINE ###
   #Progress Bar
@@ -136,9 +96,9 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   golden.ratio = 2/(sqrt(5) + 1)
   
   ### Evaluate the function at the extremes
-  fmin = thetafunc(lower,x,ii,tm,tc,trR,P,Id,nr,nc)
+  fmin = thetafunc(lower,x,ii,tr,r)
   cat('1 \n')
-  fmax = thetafunc(upper,x,ii,tm,tc,trR,P,Id,nr,nc)
+  fmax = thetafunc(upper,x,ii,tr,r)
   cat('2 \n')
                    
   ### Use the golden ratio to set the initial test points
@@ -146,9 +106,9 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   x2 = lower + golden.ratio*(upper - lower)
   
   ### Evaluate the function at the first test points
-  f1 = thetafunc(x1,x,ii,tm,tc,trR,P,Id,nr,nc)
+  f1 = thetafunc(x1,x,ii,tr,r)
   cat('3 \n')
-  f2 = thetafunc(x2,x,ii,tm,tc,trR,P,Id,nr,nc)
+  f2 = thetafunc(x2,x,ii,tr,r)
   cat('4 \n')
   ### Output values storage
   theta.val <- c(lower,upper,x1,x2)
@@ -165,7 +125,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
       x2 = x1
       f2 = f1
       x1 = upper - golden.ratio*(upper - lower)
-      f1 = thetafunc(x1,x,ii,tm,tc,trR,P,Id,nr,nc)
+      f1 = thetafunc(x1,x,ii,tr,r)
       theta.val <- c(theta.val,x1)
       LL.val <- c(LL.val,f1)
     } else {
@@ -173,7 +133,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
       x1 = x2
       f1 = f2
       x2 = lower + golden.ratio*(upper - lower)
-      f2 = thetafunc(x2,x,ii,tm,tc,trR,P,Id,nr,nc)
+      f2 = thetafunc(x2,x,ii,tr,r)
       theta.val <- c(theta.val,x2)
       LL.val <- c(LL.val,f2)
     }
