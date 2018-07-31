@@ -13,7 +13,8 @@
 #' @param rand if \code{NA} (the default) every second segment is evauluated (n/2), otherwise an integer indicating how many random segments to test.
 #' @param niter used to define maximum number of iterations of golden-search routine
 #' @param tolerance used to define precision of golden search routine (i.e., routine stops when the absolute difference between two consecutive test points is below this value). 
-#' @param dmin Use only segments where the movement distance is greater than dmin (default is 0 or all segments).
+#' @param dmin Use only segments where the movement distance is greater than dmin (default is NA or all segments).
+#' @param dmax Use only segments where the movement distance is less than dmax (default is NA or all segments).
 #' @param plot logical, whether or not to plot the log-likelihood curve.
 #'
 #' @return
@@ -29,7 +30,7 @@
 #
 # ---- End of roxygen documentation ----
 
-esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin=0,plot=TRUE){
+esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin=0,dmax=NA,plot=TRUE){
 
   #Function to compute LL probability for a set of fixes and a given level of theta
   ### MODIFIED FROM passage function in gdistance
@@ -77,8 +78,17 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
     ii <- sample(1:(n-2),rand)
   }
   #Can choose to only use movement fixes (based on dmin) - reduces number of segments in test. 
-  ii <- ii[which(x$dist[ii] >= dmin & x$dist[ii+1] >= dmin)]   
-  print(paste('Using a dmin value of',dmin, ' ; ', length(ii), 'fixes will be used to estimate theta.'))
+  if (!is.na(dmax)){
+    ii <- ii[which(x$dist[ii] >= dmin & x$dist[ii+1] >= dmin)]   
+    print(paste('Using a dmin value of',dmin, ' ; ', length(ii), 'fixes will be used to estimate theta.'))
+  }
+
+  #Can choose to only use non-movement fixes (based on dmax) - reduces number of segments in test.
+  if (!is.na(dmax)){
+    ii <- ii[which(x$dist[ii] <= dmax & x$dist[ii+1] <= dmax)]   
+    print(paste('Using a dmax value of',dmax, ' ; ', length(ii), 'fixes will be used to estimate theta.'))
+  }
+
   
   #Make *Symmetric* TransitionLayer from raster (e.g., avg cells)
   s1 <- function(x){x[1]}
