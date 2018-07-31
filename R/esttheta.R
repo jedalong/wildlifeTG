@@ -44,7 +44,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
       spz <- SpatialPoints(x[j+1,c('x','y')])
       c1 <- raster::cellFromXY(tr,sp1)
       c2 <- raster::cellFromXY(tr,sp2)
-      cz <- raster::cellFromXY(Pt, spz)
+      cz <- raster::cellFromXY(tr, spz)
       chck <- anyDuplicated(c(c1,c2,cz))
       # if (c1 == c2){
       #   #Start and end pixel is the same which means no movement. Need to adjust passage function.
