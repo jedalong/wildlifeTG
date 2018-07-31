@@ -23,7 +23,7 @@
 #
 # ---- End of roxygen documentation ----
 
-rspUD <- function(traj, r,theta,theta.col){
+rspUD <- function(traj,r,theta,theta.col){
   #make a trajectory dataframe
   df <- ld(traj)
   n <- dim(df)[1]
