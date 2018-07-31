@@ -82,7 +82,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
     ii <- sample(1:(n-2),rand)
   }
   #Can choose to only use movement fixes (based on dmin) - reduces number of segments in test. 
-  if (!is.na(dmax)){
+  if (!is.na(dmin)){
     ii <- ii[which(x$dist[ii] >= dmin & x$dist[ii+1] >= dmin)]   
     print(paste('Using a dmin value of',dmin, ' ; ', length(ii), 'fixes will be used to estimate theta.'))
   }
