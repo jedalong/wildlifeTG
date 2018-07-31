@@ -55,7 +55,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
       #   sp2 <- raster::xyFromCell(r,c2,spatial=TRUE)
       #   sp2@proj4string <-sp1@proj4string   #this could cause an issue if traj and raster not in same projection
       # }
-      if (!chck) {
+      if (chck == 0) {
         #Movement Occurs (at least from one cell to another)
         Pt <- passage(tr,sp1,sp2,theta=theta,totalNet='net')
         pz[i] <- Pt[cz]
