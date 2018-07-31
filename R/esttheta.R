@@ -30,7 +30,7 @@
 #
 # ---- End of roxygen documentation ----
 
-esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin=0,dmax=NA,plot=TRUE){
+esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin=NA,dmax=NA,plot=TRUE){
 
   #Function to compute LL probability for a set of fixes and a given level of theta
   ### MODIFIED FROM passage function in gdistance
@@ -42,22 +42,26 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
       sp2 <- SpatialPoints(x[j+2,c('x','y')])
       c1 <- raster::cellFromXY(tr,sp1)
       c2 <- raster::cellFromXY(tr,sp2)
-      if (c1 == c2){
-        #Start and end pixel is the same which means no movement. Need to adjust passage function.
-        # Arbitrarily set end location to the next pixel over (check if edge)
-        ########################################
-        ind <- adjacent(r,c1,pairs=FALSE,id=TRUE)
-        c2 <- ind[which.max(r[ind])]
-        sp2 <- raster::xyFromCell(r,c2,spatial=TRUE)
-        sp2@proj4string <-sp1@proj4string   #this could cause an issue if traj and raster not in same projection
-      } 
-      #Movement Occurs (at least from one cell to another)
-      Pt <- passage(tr,sp1,sp2,theta=theta,totalNet='net')
-      
-      #get midpoint value
-      spz <- SpatialPoints(x[j+1,c('x','y')])  
-      cz <- raster::cellFromXY(Pt, spz)
-      pz[i] <- Pt[cz]
+      # if (c1 == c2){
+      #   #Start and end pixel is the same which means no movement. Need to adjust passage function.
+      #   # Arbitrarily set end location to the next pixel over (check if edge)
+      #   ########################################
+      #   ind <- adjacent(r,c1,pairs=FALSE,id=TRUE)
+      #   c2 <- ind[which.max(r[ind])]
+      #   sp2 <- raster::xyFromCell(r,c2,spatial=TRUE)
+      #   sp2@proj4string <-sp1@proj4string   #this could cause an issue if traj and raster not in same projection
+      # }
+      if (c1 != c2) {
+        #Movement Occurs (at least from one cell to another)
+        Pt <- passage(tr,sp1,sp2,theta=theta,totalNet='net')
+        #get midpoint value
+        spz <- SpatialPoints(x[j+1,c('x','y')])  
+        cz <- raster::cellFromXY(Pt, spz)
+        pz[i] <- Pt[cz]
+      } else {
+        pz[i] <- 0
+      }
+
     }
     
     #Calculate the negative of the log-likelihood - we are using a minimizing golden search function
