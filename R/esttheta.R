@@ -15,7 +15,6 @@
 #' @param tolerance used to define precision of golden search routine (i.e., routine stops when the absolute difference between two consecutive test points is below this value). 
 #' @param dmin Use only segments where the movement distance is greater than dmin (default is NA or all segments).
 #' @param dmax Use only segments where the movement distance is less than dmax (default is NA or all segments).
-#' @param log (logical) whether or not to use the log-likelihood (not sure what is up here). Default is FALSE.
 #' @param plot logical, whether or not to plot the likelihood curve.
 #'
 #' @return
@@ -31,10 +30,9 @@
 #
 # ---- End of roxygen documentation ----
 
-esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin=NA,dmax=NA,log=FALSE,plot=TRUE){
+esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin=NA,dmax=NA,plot=TRUE){
 
-  #Function to compute LL probability for a set of fixes and a given level of theta
-  ### MODIFIED FROM passage function in gdistance
+  #Function to compute likelihood for a set of fixes and a given level of theta
   thetafunc <- function(theta,x,ii,tr,r,log){
     pz <- 0*ii
     for (i in 1:length(ii)){
@@ -47,7 +45,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
       cz <- raster::cellFromXY(tr, spz)
       chck <- anyDuplicated(c(c1,c2,cz))
       # if (c1 == c2){
-      #   #Start and end pixel is the same which means no movement. Need to adjust passage function.
+      #   #Start and end pixel is the same which means no movement.
       #   # Arbitrarily set end location to the next pixel over (check if edge)
       #   ########################################
       #   ind <- adjacent(r,c1,pairs=FALSE,id=TRUE)
@@ -66,13 +64,8 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
     }
     
     #Calculate the negative of the likelihood - we are using a minimizing golden search function
-    if (log){
-      LLpz <- -log(pz) 
-      LLpz[is.infinite(LLpz)] <- NA
-    } else {
-      LLpz <- -pz
-    }
-    LL <- sum(LLpz,na.rm=T)
+    LLpz <- -pz
+    LL <- log(sum(LLpz,na.rm=T))
     return(LL)
   }
   
@@ -163,12 +156,10 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   
   if (plot){
     ord <- order(theta.val)
-    if (log){
-      plot(theta.val[ord],-LL.val[ord],xlab='theta',ylab='log-likelihood',pch=20)
-    } else {
-      plot(theta.val[ord],-LL.val[ord],xlab='theta',ylab='likelihood',pch=20)
-    }
-    points(theta.val[ord],-LL.val[ord],type='l')
+    plot(theta.val[ord],-LL.val[ord],xlab='theta',ylab='log-likelihood',type=n)
+    ss <- smooth.spline(theta.val[ord],-LL.val[ord],df=3)
+    lines(ss)
+    #points(theta.val[ord],-LL.val[ord],type='l')
     abline(v=est.min,col='red')
   }
   
