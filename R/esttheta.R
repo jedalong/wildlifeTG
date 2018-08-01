@@ -107,9 +107,9 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   golden.ratio = 2/(sqrt(5) + 1)
   
   ### Evaluate the function at the extremes
-  fmin = thetafunc(lower,x,ii,tr,r,log)
+  fmin = thetafunc(lower,x,ii,tr,r)
   cat('1 \n')
-  fmax = thetafunc(upper,x,ii,tr,r,log)
+  fmax = thetafunc(upper,x,ii,tr,r)
   cat('2 \n')
                    
   ### Use the golden ratio to set the initial test points
@@ -117,9 +117,9 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   x2 = lower + golden.ratio*(upper - lower)
   
   ### Evaluate the function at the first test points
-  f1 = thetafunc(x1,x,ii,tr,r,log)
+  f1 = thetafunc(x1,x,ii,tr,r)
   cat('3 \n')
-  f2 = thetafunc(x2,x,ii,tr,r,log)
+  f2 = thetafunc(x2,x,ii,tr,r)
   cat('4 \n')
   ### Output values storage
   theta.val <- c(lower,upper,x1,x2)
@@ -136,7 +136,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
       x2 = x1
       f2 = f1
       x1 = upper - golden.ratio*(upper - lower)
-      f1 = thetafunc(x1,x,ii,tr,r,log)
+      f1 = thetafunc(x1,x,ii,tr,r)
       theta.val <- c(theta.val,x1)
       LL.val <- c(LL.val,f1)
     } else {
@@ -144,7 +144,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
       x1 = x2
       f1 = f2
       x2 = lower + golden.ratio*(upper - lower)
-      f2 = thetafunc(x2,x,ii,tr,r,log)
+      f2 = thetafunc(x2,x,ii,tr,r)
       theta.val <- c(theta.val,x2)
       LL.val <- c(LL.val,f2)
     }
