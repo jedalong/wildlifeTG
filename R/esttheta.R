@@ -158,7 +158,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
     ord <- order(theta.val)
     LL.val <- -log(LL.val)
     plot(theta.val[ord],LL.val[ord],xlab='theta',ylab='log-likelihood',type=n)
-    ss <- smooth.spline(theta.val[ord],-LL.val[ord],df=4)
+    ss <- smooth.spline(theta.val[ord],LL.val[ord],df=4)
     lines(ss)
     #points(theta.val[ord],-LL.val[ord],type='l')
     abline(v=est.min,col='red')
