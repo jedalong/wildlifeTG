@@ -33,7 +33,7 @@
 esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin=NA,dmax=NA,plot=TRUE){
 
   #Function to compute likelihood for a set of fixes and a given level of theta
-  thetafunc <- function(theta,x,ii,tr,r,log){
+  thetafunc <- function(theta,x,ii,tr,r){
     pz <- 0*ii
     for (i in 1:length(ii)){
       j <- ii[i]
@@ -64,8 +64,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
     }
     
     #Calculate the negative of the likelihood - we are using a minimizing golden search function
-    LLpz <- -pz
-    LL <- log(sum(LLpz,na.rm=T))
+    LL <- -log(sum(pz,na.rm=T))
     return(LL)
   }
   
@@ -156,7 +155,6 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   
   if (plot){
     ord <- order(theta.val)
-    LL.val <- -log(LL.val)
     plot(theta.val[ord],LL.val[ord],xlab='theta',ylab='log-likelihood',type=n)
     ss <- smooth.spline(theta.val[ord],LL.val[ord],df=4)
     lines(ss)
