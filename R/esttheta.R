@@ -8,8 +8,7 @@
 #'   
 #' @param traj animal movement trajectory in the form of an \code{ltraj} object, see package \code{adehabitatLT}
 #' @param r a \code{RasterLayer} object describing the preference/permeability of the landscape. May be the result of a resource selection function, or other analyses. Note: Higher values should be associated higher preference or permeability.
-#' @param lower lower bound for \code{theta} testing range (default = 0) 
-#' @param upper upper bound for \code{theta} testing range (default = 1)
+#' @param rangetheta uppper and lower bound for \code{theta} testing range (default = [0,1]).
 #' @param rand if \code{NA} (the default) every second segment is evauluated (n/2), otherwise an integer indicating how many random segments to test.
 #' @param niter used to define maximum number of iterations of golden-search routine
 #' @param tolerance used to define precision of golden search routine (i.e., routine stops when the absolute difference between two consecutive test points is below this value). 
@@ -30,7 +29,7 @@
 #
 # ---- End of roxygen documentation ----
 
-esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin=NA,dmax=NA,plot=TRUE){
+esttheta <- function(traj,r,rangetheta=c(0,1),rand=NA,niter=10,tolerance=0.01,dmin=NA,dmax=NA,plot=TRUE){
 
   #Function to compute likelihood for a set of fixes and a given level of theta
   thetafunc <- function(theta,x,ii,tr,r){
@@ -56,6 +55,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
       if (chck == 0) {
         #Movement Occurs (at least from one cell to another)
         Pt <- passage(tr,sp1,sp2,theta=theta,totalNet='net')
+        Pt <- Pt / cellStats(Pt,sum)
         pz[i] <- Pt[cz]
       } else {
         pz[i] <- 1
@@ -63,7 +63,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
 
     }
     
-    #Calculate the negative log-likelihood - we are using a minimizing golden search function
+    #Calculate the negative log likelihood - we are using a minimizing golden search function
     LL <- -log(prod(pz))
     return(LL)
   }
@@ -79,13 +79,13 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   }
   #Can choose to only use movement fixes (based on dmin) - reduces number of segments in test. 
   if (!is.na(dmin)){
-    ii <- ii[which(x$dist[ii] >= dmin & x$dist[ii+1] >= dmin)]   
+    ii <- ii[which(x$dist[ii] + x$dist[ii+1] >= dmin)]   
     print(paste('Using a dmin value of',dmin, ' ; ', length(ii), 'fixes will be used to estimate theta.'))
   }
 
   #Can choose to only use non-movement fixes (based on dmax) - reduces number of segments in test.
   if (!is.na(dmax)){
-    ii <- ii[which(x$dist[ii] <= dmax & x$dist[ii+1] <= dmax)]   
+    ii <- ii[which(x$dist[ii] + x$dist[ii+1] <= dmax)]   
     print(paste('Using a dmax value of',dmax, ' ; ', length(ii), 'fixes will be used to estimate theta.'))
   }
 
@@ -100,6 +100,8 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   r <- raster(tr)
   
   #### GOLDEN SEARCH ROUTINE ###
+  lower <- rangetheta[1]
+  upper <- rangetheta[2]
   #Progress Bar
   cat('Iterations: \n')
 
@@ -154,6 +156,7 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   #est.min = (lower + upper)/2
   
   if (plot){
+    ord <- order(theta.val)
     plot(theta.val[ord],-LL.val[ord],xlab='theta',ylab='log-likelihood')
     points(theta.val[ord],-LL.val[ord],type='l')
     abline(v=est.min,col='red')
@@ -161,3 +164,5 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   
   return(est.min)
 }
+
+
