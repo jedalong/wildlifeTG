@@ -58,13 +58,13 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
         Pt <- passage(tr,sp1,sp2,theta=theta,totalNet='net')
         pz[i] <- Pt[cz]
       } else {
-        pz[i] <- 0
+        pz[i] <- 1
       }
 
     }
     
-    #Calculate the negative of the likelihood - we are using a minimizing golden search function
-    LL <- -log(sum(pz,na.rm=T))
+    #Calculate the negative log-likelihood - we are using a minimizing golden search function
+    LL <- -log(prod(pz))
     return(LL)
   }
   
@@ -154,12 +154,8 @@ esttheta <- function(traj,r,lower=0,upper=1,rand=NA,niter=10,tolerance=0.01,dmin
   #est.min = (lower + upper)/2
   
   if (plot){
-    ord <- order(theta.val)
-    #convert back to positive log-likelihood.
-    plot(theta.val[ord],-LL.val[ord],xlab='theta',ylab='log-likelihood',type='n')
-    ss <- smooth.spline(theta.val[ord],-LL.val[ord],df=3)
-    lines(ss)
-    #points(theta.val[ord],-LL.val[ord],type='l')
+    plot(theta.val[ord],-LL.val[ord],xlab='theta',ylab='log-likelihood')
+    points(theta.val[ord],-LL.val[ord],type='l')
     abline(v=est.min,col='red')
   }
   
