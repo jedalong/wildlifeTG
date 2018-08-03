@@ -10,6 +10,7 @@
 #' @param r a \code{RasterLayer} object describing the preference/affinity of the landscape. May be the result of a resource selection function, or other analyses. Note: Higher values should be associated higher affinity.
 #' @param theta a global value for theta.
 #' @param theta.col character string of the name of the column containing values of theta for each segment (only used if theta is not provided).
+#' @param timescale (logical) whether or not to scale each segment so the sum of the output surface is equal to the duration of the segment (in seconds). Default = FALSE.
 #'
 #' @return
 #'   This function returns a \code{RasterLayer} which can be used to estimate the UD of an animal.
@@ -23,11 +24,11 @@
 #
 # ---- End of roxygen documentation ----
 
-rspUD <- function(traj,r,theta,theta.col){
+rspUD <- function(traj,r,theta,theta.col,timescale=FALSE){
   #make a trajectory dataframe
   df <- ld(traj)
   n <- dim(df)[1]
-  TT <- as.numeric(df$date[n]-df$date[1], units='secs')
+  TT <- sum(df$dt,na.rm=T)
   
   #Make *Symmetric* TransitionLayer from raster (e.g., avg cells)
   s1 <- function(x){x[1]}
@@ -45,7 +46,7 @@ rspUD <- function(traj,r,theta,theta.col){
       df$theta <- df[,theta.col]
     }
   } else {
-    df$theta <- theta
+    df$theta <- theta*(mean(df$dt,na.rm=T)/df$dt)^2
   }
   
   #make an output raster
@@ -53,8 +54,6 @@ rspUD <- function(traj,r,theta,theta.col){
   #Progress Bar
   pb = txtProgressBar(min = 0, max = (n-1), initial = 0,style=3) 
   for (i in 1:(n-1)){   #Could parrallelize or apply?
-    theta <- df$theta[i]
-    dt <- df$dt[i]
     sp1 <- SpatialPoints(df[i,c('x','y')])
     sp2 <- SpatialPoints(df[i+1,c('x','y')])
     c1 <- cellFromXY(tr,sp1)
@@ -70,9 +69,13 @@ rspUD <- function(traj,r,theta,theta.col){
     } 
     ##########################################
     #Movement Occurs (at least from one cell to another)
-    Pt <- passage(tr,sp1,sp2,theta=theta,totalNet='net')
-    #Make sure Pi sum is proportional to the segment dt to account for unequally timed segments.
-    Pt <- (Pt/cellStats(Pt,sum)) * dt/TT
+    Pt <- passage(tr,sp1,sp2,theta=df$theta[i],totalNet='net')
+    Pt[c(c1,c2)] <- 0.5   #scale down prob 1 at end points to account for double counting fixes.
+    Pt <- (Pt/cellStats(Pt,sum)) 
+    if (timescale){
+      #Make sure Pi sum is proportional to the segment dt to account for unequally timed segments.
+      Pt <- Pt*(df$dt[i]/TT)
+    }
     Pi <- Pi + Pt
     #update progress bar
     setTxtProgressBar(pb,i)

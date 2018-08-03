@@ -32,8 +32,10 @@
 esttheta <- function(traj,r,rangetheta=c(0,1),rand=NA,niter=10,tolerance=0.01,dmin=NA,dmax=NA,plot=TRUE){
 
   #Function to compute likelihood for a set of fixes and a given level of theta
-  thetafunc <- function(theta,x,ii,tr,r){
+  thetafunc <- function(theta,x,ii,tr){
     pz <- 0*ii
+    w <- 0*ii
+    mdt <- mean(x$dt[ii]+x$dt[ii+1])
     for (i in 1:length(ii)){
       j <- ii[i]
       sp1 <- SpatialPoints(x[j,c('x','y')])
@@ -42,20 +44,13 @@ esttheta <- function(traj,r,rangetheta=c(0,1),rand=NA,niter=10,tolerance=0.01,dm
       c1 <- raster::cellFromXY(tr,sp1)
       c2 <- raster::cellFromXY(tr,sp2)
       cz <- raster::cellFromXY(tr, spz)
+      wi <- (mdt/(x$dt[j]+x$dt[j+1]))^2
+      #It only makes sense to cross validate where Movement Occurs (at least from one cell to another)
       chck <- anyDuplicated(c(c1,c2,cz))
-      # if (c1 == c2){
-      #   #Start and end pixel is the same which means no movement.
-      #   # Arbitrarily set end location to the next pixel over (check if edge)
-      #   ########################################
-      #   ind <- adjacent(r,c1,pairs=FALSE,id=TRUE)
-      #   c2 <- ind[which.max(r[ind])]
-      #   sp2 <- raster::xyFromCell(r,c2,spatial=TRUE)
-      #   sp2@proj4string <-sp1@proj4string   #this could cause an issue if traj and raster not in same projection
-      # }
       if (chck == 0) {
-        #Movement Occurs (at least from one cell to another)
-        Pt <- passage(tr,sp1,sp2,theta=theta,totalNet='net')
-        Pt <- Pt / cellStats(Pt,sum)
+        Pt <- passage(tr,sp1,sp2,theta=wi*theta,totalNet='net')
+        Pt[c(c1,c2)] <- 0.5
+        Pt <- Pt / cellStats(Pt,sum)    
         pz[i] <- Pt[cz]
       } else {
         pz[i] <- 1
@@ -64,7 +59,7 @@ esttheta <- function(traj,r,rangetheta=c(0,1),rand=NA,niter=10,tolerance=0.01,dm
     }
     
     #Calculate the negative log likelihood - we are using a minimizing golden search function
-    LL <- -log(prod(pz))
+    LL <- -sum(log(pz))
     return(LL)
   }
   
@@ -97,7 +92,7 @@ esttheta <- function(traj,r,rangetheta=c(0,1),rand=NA,niter=10,tolerance=0.01,dm
   tr2 <- transition(r, s2, 8,symm=F)
   tr <- (tr1 + tr2)/2
   tr <- geoCorrection(tr,type='c',multpl=FALSE)
-  r <- raster(tr)
+
   
   #### GOLDEN SEARCH ROUTINE ###
   lower <- rangetheta[1]
@@ -108,9 +103,9 @@ esttheta <- function(traj,r,rangetheta=c(0,1),rand=NA,niter=10,tolerance=0.01,dm
   golden.ratio = 2/(sqrt(5) + 1)
   
   ### Evaluate the function at the extremes
-  fmin = thetafunc(lower,x,ii,tr,r)
+  fmin = thetafunc(lower,x,ii,tr)
   cat('1 \n')
-  fmax = thetafunc(upper,x,ii,tr,r)
+  fmax = thetafunc(upper,x,ii,tr)
   cat('2 \n')
                    
   ### Use the golden ratio to set the initial test points
@@ -118,9 +113,9 @@ esttheta <- function(traj,r,rangetheta=c(0,1),rand=NA,niter=10,tolerance=0.01,dm
   x2 = lower + golden.ratio*(upper - lower)
   
   ### Evaluate the function at the first test points
-  f1 = thetafunc(x1,x,ii,tr,r)
+  f1 = thetafunc(x1,x,ii,tr)
   cat('3 \n')
-  f2 = thetafunc(x2,x,ii,tr,r)
+  f2 = thetafunc(x2,x,ii,tr)
   cat('4 \n')
   ### Output values storage
   theta.val <- c(lower,upper,x1,x2)
@@ -137,7 +132,7 @@ esttheta <- function(traj,r,rangetheta=c(0,1),rand=NA,niter=10,tolerance=0.01,dm
       x2 = x1
       f2 = f1
       x1 = upper - golden.ratio*(upper - lower)
-      f1 = thetafunc(x1,x,ii,tr,r)
+      f1 = thetafunc(x1,x,ii,tr)
       theta.val <- c(theta.val,x1)
       LL.val <- c(LL.val,f1)
     } else {
@@ -145,7 +140,7 @@ esttheta <- function(traj,r,rangetheta=c(0,1),rand=NA,niter=10,tolerance=0.01,dm
       x1 = x2
       f1 = f2
       x2 = lower + golden.ratio*(upper - lower)
-      f2 = thetafunc(x2,x,ii,tr,r)
+      f2 = thetafunc(x2,x,ii,tr)
       theta.val <- c(theta.val,x2)
       LL.val <- c(LL.val,f2)
     }
