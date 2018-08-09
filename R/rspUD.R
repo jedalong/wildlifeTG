@@ -71,10 +71,10 @@ rspUD <- function(traj,r,theta,theta.col,timescale=FALSE){
     #Movement Occurs (at least from one cell to another)
     Pt <- passage(tr,sp1,sp2,theta=df$theta[i],totalNet='net')
     Pt[c(c1,c2)] <- 0.5   #scale down prob 1 at end points to account for double counting fixes.
-    Pt <- (Pt/cellStats(Pt,sum)) 
+    Pt <- (Pt/cellStats(Pt,sum)) #surface sums to 1 (probabilty density)
     if (timescale){
       #Make sure Pi sum is proportional to the segment dt to account for unequally timed segments.
-      Pt <- Pt*(df$dt[i]/TT)
+      Pt <- Pt*(df$dt[i])
     }
     Pi <- Pi + Pt
     #update progress bar
