@@ -5,9 +5,9 @@
 \title{Joint Potential Path Area  of Two Animals}
 \usage{
 jppa(traj1, traj2, t.int = 0.1 *
-  as.numeric(names(sort(-table(ld(traj1)$dt)))[1]), tol = max(ld(traj1)$dt,
-  na.rm = T), dissolve = TRUE, proj4string = CRS(as.character(NA)),
-  ePoints = 360, ...)
+  as.numeric(names(sort(-table(ld(traj1)$dt)))[1]),
+  tol = max(ld(traj1)$dt, na.rm = T), dissolve = TRUE,
+  proj4string = CRS(as.character(NA)), ePoints = 360, ...)
 }
 \arguments{
 \item{traj1}{an object of the class \code{ltraj} which contains the time-stamped

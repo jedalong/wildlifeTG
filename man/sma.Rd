@@ -4,8 +4,8 @@
 \alias{sma}
 \title{Slow movement areas}
 \usage{
-sma(traj, sma.keep = 1, sma.tol = 1, tol = max(ld(traj)$dt, na.rm = TRUE),
-  proj4string = CRS(as.character(NA)), ePoints = 360, ...)
+sma(traj, sma.keep = 1, sma.tol = 1, tol = max(ld(traj)$dt, na.rm =
+  TRUE), proj4string = CRS(as.character(NA)), ePoints = 360, ...)
 }
 \arguments{
 \item{traj}{an object of the class \code{ltraj} which contains the time-stamped

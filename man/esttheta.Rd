@@ -4,27 +4,27 @@
 \alias{esttheta}
 \title{Numerically estimate theta parameter for rspUD}
 \usage{
-esttheta(traj, r, min = 0, max = 1, niter = 100, tolerance = 0,
-  rand = 10, dmin = res(r)[1], plot = TRUE)
+esttheta(traj, r, rangetheta = c(0, 1), rand = NA, niter = 10,
+  tolerance = 0.01, dmin = NA, dmax = NA, plot = TRUE)
 }
 \arguments{
 \item{traj}{animal movement trajectory in the form of an \code{ltraj} object, see package \code{adehabitatLT}}
 
 \item{r}{a \code{RasterLayer} object describing the preference/permeability of the landscape. May be the result of a resource selection function, or other analyses. Note: Higher values should be associated higher preference or permeability.}
 
-\item{min}{lower bound for \code{theta} testing range (default = 0)}
+\item{rangetheta}{uppper and lower bound for \code{theta} testing range (default = [0,1]).}
 
-\item{max}{upper bound for \code{theta} testing range (default = 1)}
+\item{rand}{if \code{NA} (the default) every second segment is evauluated (n/2), otherwise an integer indicating how many random segments to test.}
 
-\item{niter}{used to define maximum number of iterations of golden-search routine.}
+\item{niter}{used to define maximum number of iterations of golden-search routine}
 
 \item{tolerance}{used to define precision of golden search routine (i.e., routine stops when the absolute difference between two consecutive test points is below this value).}
 
-\item{rand}{an integer indicating how many random segments to test.}
+\item{dmin}{Use only segments where the movement distance is greater than dmin (default is NA or all segments).}
 
-\item{dmin}{(defaults to \code{res(r)[1]}) the minimum movement distance to use as random samples. See details.}
+\item{dmax}{Use only segments where the movement distance is less than dmax (default is NA or all segments).}
 
-\item{plot}{logical, whether or not to plot the log-likelihood curve.}
+\item{plot}{logical, whether or not to plot the likelihood curve.}
 }
 \value{
 This function returns an estimate for the theta parameter which can be used with the rspUD function.

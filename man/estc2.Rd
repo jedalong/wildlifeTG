@@ -4,7 +4,7 @@
 \alias{estc2}
 \title{Numerically estimate c2 parameter}
 \usage{
-estc2(traj, tl, timefun = "exp", sigma = 0, min = 0, max = 1,
+estc2(traj, tl, timefun = "exp", sigma = 0, lower = 0, upper = 1,
   rand = NA, niter = 10, tolerance = 0.01, plot = TRUE)
 }
 \arguments{
@@ -23,9 +23,9 @@ estc2(traj, tl, timefun = "exp", sigma = 0, min = 0, max = 1,
 
 \item{sigma}{location uncertainty parameter (see fbtgUD)}
 
-\item{min}{lower bound for \code{c2} testing range (default = 0)}
+\item{lower}{lower bound for \code{c2} testing range (default = 0)}
 
-\item{max}{upper bound for \code{c2} testing range (default = 1)}
+\item{upper}{upper bound for \code{c2} testing range (default = 1)}
 
 \item{rand}{if \code{NA} (the default) every second segment is evauluated (n/2), otherwise an integer indicating how many random segments to test.}
 

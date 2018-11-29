@@ -1,3 +1,9 @@
+wildlifeTG 0.0.5
+================
+* 2018-11-29
+* NEW ppv function for 3D home ranges
+
+
 wildilfeTG 0.0.4
 ================
 * 2018-05-10
@@ -12,7 +18,7 @@ wildilfeTG 0.0.4
 * New internal functions
 
 
-wildlifeTG 0.0.3
+wildlifeTG 0.3
 ================
 * 2016-09-20
 * Added several new functions relating to field based time geography model.

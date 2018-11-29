@@ -4,7 +4,7 @@
 \alias{rspUD}
 \title{Randomised Shortest Path Utilization Distribution}
 \usage{
-rspUD(traj, r, theta, theta.col)
+rspUD(traj, r, theta, theta.col, timescale = FALSE)
 }
 \arguments{
 \item{traj}{animal movement trajectory in the form of an \code{ltraj} object, see package \code{adehabitatLT}}
@@ -14,6 +14,8 @@ rspUD(traj, r, theta, theta.col)
 \item{theta}{a global value for theta.}
 
 \item{theta.col}{character string of the name of the column containing values of theta for each segment (only used if theta is not provided).}
+
+\item{timescale}{(logical) whether or not to scale each segment so the sum of the output surface is equal to the duration of the segment (in seconds). Default = FALSE.}
 }
 \value{
 This function returns a \code{RasterLayer} which can be used to estimate the UD of an animal.
